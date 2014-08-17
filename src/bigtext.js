@@ -1,5 +1,5 @@
 (function(window, $) {
-  "use strict";
+  'use strict';
 
   var counter = 0,
     $headCache = $('head'),
@@ -26,12 +26,13 @@
           if( !( 'getComputedStyle' in window ) || document.body == null ) {
             return true;
           }
-          var test = $('<div/>').css({
-              position: 'absolute',
-              'font-size': '14.1px'
-            }).appendTo(document.body).get(0),
-            computedStyle = window.getComputedStyle( test, null );
-
+          // Test if whole number font-sizes are supported or not
+          var test = document.createElement('div');
+          test.style.postion = 'absolute';
+          test.style.fontSize = '14.1px';
+          document.body.appendChild(test);
+          var computedStyle = window.getComputedStyle( test, null );
+          document.body.removeChild(test);
           if( computedStyle ) {
             return computedStyle.getPropertyValue( 'font-size' ) === '14px';
           }
@@ -51,17 +52,8 @@
                                           '.bigtext .' + BigText.EXEMPT_CLASS + ', .bigtext .' + BigText.EXEMPT_CLASS + ' * { white-space: normal; }']));
         }
       },
-      bindResize: function(eventName, resizeFunction) {
-        if($.throttle) {
-          // https://github.com/cowboy/jquery-throttle-debounce
-          $(window).unbind(eventName).bind(eventName, $.throttle(100, resizeFunction));
-        } else {
-          if($.fn.smartresize) {
-            // https://github.com/lrbabe/jquery-smartresize/
-            eventName = 'smartresize.' + eventName;
-          }
-          $(window).unbind(eventName).bind(eventName, resizeFunction);
-        }
+      bindResize: function(eventName) {
+        $(window).unbind(eventName).bind(eventName, debounce(eventName, 150));
       },
       getStyleId: function(id)
       {
@@ -69,12 +61,18 @@
       },
       generateStyleTag: function(id, css)
       {
-        return $('<style>' + css.join('\n') + '</style>').attr('id', id);
+        var styleEl = document.createElement('style');
+        styleEl.innerHTML = css.join('\n');
+        styleEl.setAttribute('id', id);
+        return styleEl;
       },
       clearCss: function(id)
       {
         var styleId = BigText.getStyleId(id);
-        $('#' + styleId).remove();
+        var styleEl = document.getElementById(styleId);
+        // document.getElementById(styleId).parentNode.removeChild(el);
+        $(styleEl).remove(); // Not done
+        // styleEl.parentNode.removeChild(styleEl);
       },
       generateCss: function(id, linesFontSizes, lineWordSpacings, minFontSizes)
       {
@@ -96,7 +94,7 @@
       {
         BigText.init();
 
-        options = $.extend({
+        options = extend({
           minfontsize: BigText.DEFAULT_MIN_FONT_SIZE_PX,
           maxfontsize: BigText.DEFAULT_MAX_FONT_SIZE_PX,
           childSelector: '',
@@ -139,6 +137,44 @@
         return this.trigger('bigtext:complete');
       }
     };
+
+  // function addClass(el, className) {
+  //   if (el.classList) {
+  //     return el.classList.add(className);
+  //   } else {
+  //     return el.className += ' ' + className;
+  //   }
+  // }
+
+  function debounce(fn, delay)
+  {
+    var timer = null;
+    return function () {
+      var context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        fn.apply(context, args);
+      }, delay);
+    };
+  }
+
+  function extend(out)
+  {
+    out = out || {};
+
+    for (var i = 1; i < arguments.length; i++) {
+      if (!arguments[i]) {
+        continue;
+      }
+      for (var key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key)) {
+          out[key] = arguments[i][key];
+        }
+      }
+    }
+    return out;
+  }
+
 
   function testLineDimensions($line, maxWidth, property, size, interval, units, previousWidth)
   {
