@@ -1,7 +1,8 @@
 /*! BigText - v0.1.7a - 2014-08-16
- * https://github.com/zachleat/bigtext
- * Copyright (c) 2014 Zach Leatherman (@zachleat)
- * MIT License */
+ * https://github.com/kennethormandy/bigtext
+ * Copyright © 2014 Zach Leatherman (@zachleat)
+ * Copyright © 2014 Kenneth Ormandy (@kennethormandy)
+ *  License */
 
 (function(window, $) {
   'use strict';
@@ -150,7 +151,6 @@
   //     return el.className += ' ' + className;
   //   }
   // }
-
 
   function debounce(fn, delay)
   {

@@ -2,14 +2,21 @@
   "name": "bigtext",
   "title": "BigText",
   "version": "0.1.7a",
-  "description": "Calculates the font-size and word-spacing needed to match a line of text to a specific width. (jQuery plugin)",
+  "description": "Zach Leat’s BitText, without jQuery. Scale lines of text based on the space available.",
   "keywords": [
     "grunt",
     "typography"
   ],
-  "homepage": "https://github.com/zachleat/bigtext",
-  "bugs": "https://github.com/zachleat/bigtext/issues",
+  "homepage": "https://github.com/kennethormandy/bigtext",
+  "bugs": "https://github.com/kennethormandy/bigtext/issues",
   "author": {
+    "name": "Kenneth Ormandy",
+    "email": "hello@kennethormandy.com",
+    "twitter": "kennethormandy",
+    "github": "kennethormandy",
+    "url": "http://kennethormandy.com"
+  },
+  "originalAuthor": {
     "name": "Zach Leatherman",
     "email": "zachleatherman@gmail.com",
     "twitter": "zachleat",
@@ -49,12 +56,7 @@
     "node": ">=0.8.0",
     "npm": ">=1.2.10"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/zachleat/BigText/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "config": {
     "grunt": "grunt",
     "src": "src",
