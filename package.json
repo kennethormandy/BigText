@@ -21,7 +21,8 @@
     "url": "git://github.com/zachleat/bigtext.git"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "postinstall": "bower install"
   },
   "dependencies": {},
   "devDependencies": {
