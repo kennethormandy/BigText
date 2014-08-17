@@ -117,7 +117,7 @@
 
         return BigText.generateStyleTag(BigText.getStyleId(id), css);
       },
-      jQueryMethod: function(options)
+      mainMethod: function(options)
       {
         BigText.init();
 
@@ -146,7 +146,7 @@
             BigText.bindResize('resize.bigtext-event-' + id, function()
             {
               // TODO only call this if the width has changed.
-              BigText.jQueryMethod.call($('#' + id), options);
+              BigText.mainMethod.call(document.getElementById(id), options);
             });
           }
 
@@ -409,7 +409,7 @@
     };
   }
 
-  $.fn.bigtext = BigText.jQueryMethod;
+  $.fn.bigtext = BigText.mainMethod;
   window.BigText = BigText;
 
 })(this, jQuery);

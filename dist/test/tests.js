@@ -243,7 +243,7 @@
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a single line.</div></div>');
 
     var BT = BigText.noConflict();
-    $.fn.bt = BT.jQueryMethod;
+    $.fn.bt = BT.mainMethod;
 
     $('#test').bt();
 
