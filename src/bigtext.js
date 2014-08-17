@@ -59,9 +59,20 @@
           ]));
         }
       },
-      bindResize: function(eventName) {
-        if(!window.onresize) {
-          window.onresize = debounce(eventName, 100);
+      bindResize: function(eventName, resizeFunction) {
+        if(typeof window.Cowboy === 'undefined' || typeof window.Cowboy.throttle === 'undefined') {
+          if(!window.onresize) {
+            // This doesn’t work yet :(
+            console.log(eventName);
+            // window.onresize = debounce(resizeFunction, 100);
+            // window.removeEventListener(eventName, resizeFunction);
+          }
+          window.removeEventListener(eventName);
+          window.addEventListener(eventName, debounce(resizeFunction, 100));
+        } else {
+          // https://github.com/cowboy/jquery-throttle-debounce
+          window.addEventListener(eventName);
+          window.removeEventListener(eventName, window.Cowboy.throttle(100, resizeFunction));
         }
       },
       getStyleId: function(id)
@@ -100,7 +111,7 @@
 
         return BigText.generateStyleTag(BigText.getStyleId(id), css);
       },
-      jQueryMethod: function(options)
+      mainMethod: function(options)
       {
         BigText.init();
 
@@ -108,7 +119,7 @@
           minfontsize: BigText.DEFAULT_MIN_FONT_SIZE_PX,
           maxfontsize: BigText.DEFAULT_MAX_FONT_SIZE_PX,
           childSelector: '',
-          resize: false // Temp, correct default is true
+          resize: true // Temp, correct default is true
         }, options || {});
 
         forEach(this, function(self)
@@ -129,7 +140,7 @@
             BigText.bindResize('resize.bigtext-event-' + id, function()
             {
               // TODO only call this if the width has changed.
-              BigText.jQueryMethod.call($('#' + id), options);
+              BigText.mainMethod.call(document.getElementById(id), options);
             });
           }
 
@@ -392,7 +403,7 @@
     };
   }
 
-  $.fn.bigtext = BigText.jQueryMethod;
+  $.fn.bigtext = BigText.mainMethod;
   window.BigText = BigText;
 
 })(this, jQuery);
