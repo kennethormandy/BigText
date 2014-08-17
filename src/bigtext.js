@@ -6,7 +6,7 @@
   // };
 
   var counter = 0,
-    $headCache = document.getElementsByTagName('head')[0],
+    headCache = document.getElementsByTagName('head')[0],
     oldBigText = window.BigText,
     oldjQueryMethod = $.fn.bigtext,
     BigText = {
@@ -52,7 +52,7 @@
         }
 
         if(!document.getElementById(BigText.GLOBAL_STYLE_ID)) {
-          $headCache.appendChild(BigText.generateStyleTag(BigText.GLOBAL_STYLE_ID, [
+          headCache.appendChild(BigText.generateStyleTag(BigText.GLOBAL_STYLE_ID, [
             '.bigtext * { white-space: nowrap; }',
             '.bigtext > * { display: block; }',
             '.bigtext .' + BigText.EXEMPT_CLASS + ', .bigtext .' + BigText.EXEMPT_CLASS + ' * { white-space: normal; }'
@@ -97,6 +97,7 @@
             '}');
         }
 
+
         return BigText.generateStyleTag(BigText.getStyleId(id), css);
       },
       jQueryMethod: function(options)
@@ -107,19 +108,21 @@
           minfontsize: BigText.DEFAULT_MIN_FONT_SIZE_PX,
           maxfontsize: BigText.DEFAULT_MAX_FONT_SIZE_PX,
           childSelector: '',
-          resize: true
+          resize: false // Temp, correct default is true
         }, options || {});
 
-        this.each(function()
+        forEach(this, function(self)
         {
-          var $t = $(this).addClass('bigtext'),
-            maxWidth = $t.width(),
-            id = $t.attr('id'),
-            $children = options.childSelector ? $t.find( options.childSelector ) : $t.children();
+          var selfStyle = getComputedStyle(self);
+          var maxWidth = parseInt(selfStyle.getPropertyValue('width'), 10);
+          var id = self.getAttribute('id');
+          var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
+
+          addClass(self, 'bigtext');
 
           if(!id) {
             id = 'bigtext-id' + (counter++);
-            $t.attr('id', id);
+            self.setAttribute('id', id);
           }
 
           if(options.resize) {
@@ -132,28 +135,59 @@
 
           BigText.clearCss(id);
 
-          $children.addClass(function(lineNumber, className)
-          {
-            // remove existing line classes.
-            return [className.replace(new RegExp('\\b' + BigText.LINE_CLASS_PREFIX + '\\d+\\b'), ''),
-                BigText.LINE_CLASS_PREFIX + lineNumber].join(' ');
+          forEach(children, function(child, lineNumber){
+            // Remove existing line classes.
+            addClass(child, child.className.replace(new RegExp('\\b' + BigText.LINE_CLASS_PREFIX + '\\d+\\b'), '') + BigText.LINE_CLASS_PREFIX + lineNumber);
           });
 
-          var sizes = calculateSizes($t, $children, maxWidth, options.maxfontsize, options.minfontsize);
-          $headCache.appendChild(BigText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
+          var sizes = calculateSizes(self, children, maxWidth, options.maxfontsize, options.minfontsize);
+          headCache.appendChild(BigText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
 
-        return this.trigger('bigtext:complete');
+        // console.log(this);
+        // return trigger(this, 'bigtext:complete');
+        return;
       }
     };
 
-  // function addClass(el, className) {
-  //   if (el.classList) {
-  //     return el.classList.add(className);
+  // function trigger(el, name) {
+  //   var evt;
+  //   if (typeof CustomEvent !== 'function') {
+  //     evt = document.createEvent('HTMLEvents');
+  //     evt.initEvent(name, true, false);
   //   } else {
-  //     return el.className += ' ' + className;
+  //     evt = new CustomEvent(name);
   //   }
+  //   el.dispatchEvent(evt);
+  //   return;
   // }
+
+  function forEach(el, fn) {
+    Array.prototype.forEach.call(el, fn);
+  }
+
+  function getComputedStyle(el, pseudo) {
+    pseudo = pseudo || null;
+    if (!BigText.supports.wholeNumberFontSizeOnly) {
+      return window.getComputedStyle(el, pseudo);
+    }
+  }
+
+  function addClass(el, className) {
+    if (el.classList) {
+      return el.classList.add(className);
+    } else {
+      return el.className += ' ' + className;
+    }
+  }
+
+  function hasClass(el, className) {
+    if (el.classList) {
+      el.classList.contains(className);
+    } else {
+      new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+    }
+  }
 
   function debounce(fn, delay)
   {
@@ -185,17 +219,18 @@
   }
 
 
-  function testLineDimensions($line, maxWidth, property, size, interval, units, previousWidth)
+  function testLineDimensions(line, maxWidth, property, size, interval, units, previousWidth)
   {
     var width;
+    var currentStyle = getComputedStyle(line);
     previousWidth = typeof previousWidth === 'number' ? previousWidth : 0;
-    $line.css(property, size + units);
+    line.style[property] = size + units;
 
-    width = $line.width();
+    width = parseInt(currentStyle.getPropertyValue('width'), 10);
+
 
     if(width >= maxWidth) {
-// console.log(width, ' previous: ' + previousWidth, property + ' at ' + interval, 'prior: ' + (parseFloat(size) - interval), 'new:' + parseFloat(size));
-      $line.css(property, '');
+      line.style[property] = '';
 
       if(width === maxWidth) {
         return {
@@ -219,20 +254,31 @@
     return width;
   }
 
-  function calculateSizes($t, $children, maxWidth, maxFontSize, minFontSize)
+  function calculateSizes(t, children, maxWidth, maxFontSize, minFontSize)
   {
-    var $c = $t.clone(true)
-      .addClass('bigtext-cloned')
-      .css({
-        fontFamily: $t.css('font-family'),
-        textTransform: $t.css('text-transform'),
-        wordSpacing: $t.css('word-spacing'),
-        letterSpacing: $t.css('letter-spacing'),
-        position: 'absolute',
-        left: BigText.DEBUG_MODE ? 0 : -9999,
-        top: BigText.DEBUG_MODE ? 0 : -9999
-      })
-      .appendTo(document.body);
+    var c = t.cloneNode(true);
+    var tStyles = getComputedStyle(t);
+    //     fontFamily: $t.css('font-family'),
+    //     textTransform: $t.css('text-transform'),
+    //     wordSpacing: $t.css('word-spacing'),
+    //     letterSpacing: $t.css('letter-spacing'),
+    //     position: 'absolute',
+    //     left: BigText.DEBUG_MODE ? 0 : -9999,
+    //     top: BigText.DEBUG_MODE ? 0 : -9999
+    //   });
+
+    addClass(c, 'bigtext-cloned');
+
+    c.style.fontFamily = tStyles.getPropertyValue('font-family');
+    c.style.textTransform = tStyles.getPropertyValue('text-transform');
+    c.style.wordSpacing = tStyles.getPropertyValue('word-spacing');
+    c.style.letterSpacing = tStyles.getPropertyValue('letter-spacing');
+    c.style.position = 'absolute';
+    c.style.left = BigText.DEBUG_MODE ? 0 : -9999;
+    c.style.top = BigText.DEBUG_MODE ? 0 : -9999;
+
+    document.body.appendChild(c);
+    console.log(c);
 
     // font-size isn't the only thing we can modify, we can also mess with:
     // word-spacing and letter-spacing. WebKit does not respect subpixel
@@ -243,14 +289,15 @@
       minFontSizes = [],
       ratios = [];
 
-    $children.css('float', 'left').each(function() {
-      var $line = $(this),
-        // TODO replace 8, 4 with a proportional size to the calculated font-size.
-        intervals = BigText.supports.wholeNumberFontSizeOnly ? [8, 4, 1] : [8, 4, 1, 0.1],
-        lineMax,
-        newFontSize;
+    forEach(children, function(line) {
+      // TODO replace 8, 4 with a proportional size to the calculated font-size.
+      var intervals = BigText.supports.wholeNumberFontSizeOnly ? [8, 4, 1] : [8, 4, 1, 0.1];
+      var lineMax;
+      var newFontSize;
 
-      if($line.hasClass(BigText.EXEMPT_CLASS)) {
+      line.style.float = 'left';
+
+      if(hasClass(line, BigText.EXEMPT_CLASS)) {
         fontSizes.push(null);
         ratios.push(null);
         minFontSizes.push(false);
@@ -258,9 +305,10 @@
       }
 
       // TODO we can cache this ratio?
-      var autoGuessSubtraction = 32, // font size in px
-        currentFontSize = parseFloat($line.css('font-size')),
-        ratio = ( $line.width() / currentFontSize ).toFixed(6);
+      var autoGuessSubtraction = 32; // font size in px
+      var currentStyle = getComputedStyle(line);
+      var currentFontSize = parseFloat(currentStyle.getPropertyValue('font-size'));
+      var ratio = ( parseInt(currentStyle.getPropertyValue('width'), 10) / currentFontSize ).toFixed(6);
 
       newFontSize = parseInt( maxWidth / ratio, 10 ) - autoGuessSubtraction;
 
@@ -271,7 +319,7 @@
             break outer;
           }
 
-          lineMax = testLineDimensions($line, maxWidth, 'font-size', newFontSize + j*intervals[m], intervals[m], 'px', lineMax);
+          lineMax = testLineDimensions(line, maxWidth, 'fontSize', newFontSize + j*intervals[m], intervals[m], 'px', lineMax);
           if(typeof lineMax !== 'number') {
             newFontSize = lineMax.size;
 
@@ -295,38 +343,45 @@
         fontSizes.push(newFontSize);
         minFontSizes.push(false);
       }
-    }).each(function(lineNumber) {
-      var $line = $(this),
-        wordSpacing = 0,
-        interval = 1,
-        maxWordSpacing;
+    });
 
-      if($line.hasClass(BigText.EXEMPT_CLASS)) {
+    forEach(children, function(line, lineNumber) {
+      var wordSpacing = 0;
+      var interval = 1;
+      var maxWordSpacing;
+
+      if(hasClass(line, BigText.EXEMPT_CLASS)) {
         wordSpacings.push(null);
         return;
       }
 
       // must re-use font-size, even though it was removed above.
-      $line.css('font-size', fontSizes[lineNumber] + 'px');
+      line.style.fontSize = fontSizes[lineNumber] + 'px';
 
       for(var m=1, n=3; m<n; m+=interval) {
-        maxWordSpacing = testLineDimensions($line, maxWidth, 'word-spacing', m, interval, 'px', maxWordSpacing);
+        maxWordSpacing = testLineDimensions(line, maxWidth, 'wordSpacing', m, interval, 'px', maxWordSpacing);
         if(typeof maxWordSpacing !== 'number') {
           wordSpacing = maxWordSpacing.size;
           break;
         }
       }
 
-      $line.css('font-size', '');
+      line.style.fontSize = '';
       wordSpacings.push(wordSpacing);
-    }).removeAttr('style');
+
+    });
+
+    // No sure if this needs to be its own
+    // forEach or can exist in one previous
+    forEach(children, function(child) {
+      child.removeAttribute('style');
+    });
 
     if( !BigText.DEBUG_MODE ) {
-      $c.remove();
+      $(c).remove();
+      // c.parentNode.removeChild(c);
     } else {
-      $c.css({
-        'background-color': 'rgba(255,255,255,.4)'
-      });
+      c.style.backgroundColor = 'rgba(255,255,255,.4)';
     }
 
     return {
