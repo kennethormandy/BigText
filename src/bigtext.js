@@ -1,8 +1,12 @@
 (function(window, $) {
   'use strict';
 
+  // var $$ = function(selector) {
+  //   return document.querySelectorAll(selector);
+  // };
+
   var counter = 0,
-    $headCache = $('head'),
+    $headCache = document.getElementsByTagName('head')[0],
     oldBigText = window.BigText,
     oldjQueryMethod = $.fn.bigtext,
     BigText = {
@@ -47,13 +51,18 @@
           BigText.supports.wholeNumberFontSizeOnly = BigText.test.wholeNumberFontSizeOnly();
         }
 
-        if(!$('#'+BigText.GLOBAL_STYLE_ID).length) {
-          $headCache.append(BigText.generateStyleTag(BigText.GLOBAL_STYLE_ID, ['.bigtext * { white-space: nowrap; } .bigtext > * { display: block; }',
-                                          '.bigtext .' + BigText.EXEMPT_CLASS + ', .bigtext .' + BigText.EXEMPT_CLASS + ' * { white-space: normal; }']));
+        if(!document.getElementById(BigText.GLOBAL_STYLE_ID)) {
+          $headCache.appendChild(BigText.generateStyleTag(BigText.GLOBAL_STYLE_ID, [
+            '.bigtext * { white-space: nowrap; }',
+            '.bigtext > * { display: block; }',
+            '.bigtext .' + BigText.EXEMPT_CLASS + ', .bigtext .' + BigText.EXEMPT_CLASS + ' * { white-space: normal; }'
+          ]));
         }
       },
       bindResize: function(eventName) {
-        $(window).unbind(eventName).bind(eventName, debounce(eventName, 150));
+        if(!window.onresize) {
+          window.onresize = debounce(eventName, 100);
+        }
       },
       getStyleId: function(id)
       {
@@ -131,7 +140,7 @@
           });
 
           var sizes = calculateSizes($t, $children, maxWidth, options.maxfontsize, options.minfontsize);
-          $headCache.append(BigText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
+          $headCache.appendChild(BigText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
 
         return this.trigger('bigtext:complete');
