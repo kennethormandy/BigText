@@ -153,8 +153,8 @@
           BigText.clearCss(id);
 
           forEach(children, function(child, lineNumber){
-            // Remove existing line classes.
-            addClass(child, child.className.replace(new RegExp('\\b' + BigText.LINE_CLASS_PREFIX + '\\d+\\b'), '') + BigText.LINE_CLASS_PREFIX + lineNumber);
+            child.className = child.className.replace(new RegExp('\\b' + BigText.LINE_CLASS_PREFIX + '\\d+\\b'), '');
+            addClass(child, BigText.LINE_CLASS_PREFIX + lineNumber);
           });
 
           var sizes = calculateSizes(self, children, maxWidth, options.maxfontsize, options.minfontsize);
