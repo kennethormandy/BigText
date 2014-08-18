@@ -19,14 +19,18 @@
 
         <div id="test2" style="width:600px"><div>This is a single line.</div></div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
         <script src="../dist/bigtext.js"></script>
         <script>
-        var bt = BigText.noConflict(true);
-        $.fn.bt = bt.mainMethod;
+        // var bt = BigText.noConflict(true);
+        // $.fn.bt = bt.mainMethod;
+        //
+        // $('#test').bt();
+        // $('#test2').bt();
+        var test = document.getElementById('test');
+        var test2 = document.getElementById('test2');
+        bigText(test);
+        bigText(test2);
 
-        $('#test').bt();
-        $('#test2').bt();
         </script>
     </body>
 </html>
