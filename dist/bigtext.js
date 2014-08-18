@@ -68,13 +68,12 @@
         }
       },
       bindResize: function(eventName, resizeFunction) {
-        if(typeof window.Cowboy === 'undefined' || typeof window.Cowboy.throttle === 'undefined') {
-          window.removeEventListener(eventName);
+        window.removeEventListener('rezie', resizeFunction);
+        if(typeof window.Cowboy !== 'undefined' && typeof window.Cowboy.throttle !== 'undefined') {
+          // https://github.com/cowboy/jquery-throttle-debounce
           window.addEventListener(eventName, resizeFunction);
         } else {
-          // https://github.com/cowboy/jquery-throttle-debounce
-          window.addEventListener(eventName);
-          window.removeEventListener(eventName, window.Cowboy.throttle(100, resizeFunction));
+          window.addEventListener('resize', resizeFunction, true);
         }
       },
       getStyleId: function(id)
@@ -97,7 +96,6 @@
             return document.head.removeChild(sheet);
           }
         });
-        // $(el).remove();
       },
       generateCss: function(id, linesFontSizes, lineWordSpacings, minFontSizes)
       {
@@ -124,7 +122,7 @@
           minfontsize: BigText.DEFAULT_MIN_FONT_SIZE_PX,
           maxfontsize: BigText.DEFAULT_MAX_FONT_SIZE_PX,
           childSelector: '',
-          resize: true // Temp, correct default is true
+          resize: true
         }, options || {});
 
         forEach(this, function(self)
@@ -174,8 +172,7 @@
   //   } else {
   //     evt = new CustomEvent(name);
   //   }
-  //   el.dispatchEvent(evt);
-  //   return;
+  //   return el.dispatchEvent(evt);
   // }
 
   function forEach(el, fn) {
