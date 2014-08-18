@@ -137,7 +137,8 @@
           addClass(self, 'bigtext');
 
           if(!id) {
-            id = 'bigtext-id' + (counter++);
+            // KO changed approach here
+            id = BigText.getStyleId(counter++);
             self.setAttribute('id', id);
           }
 
