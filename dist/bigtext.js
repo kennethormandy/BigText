@@ -1,8 +1,10 @@
-/*! BigText - v0.1.7a - 2014-08-17
+/*!
+ * BigText v0.1.7a, 2014-08-17
  * https://github.com/kennethormandy/bigtext
- * Copyright © 2014 Zach Leatherman (@zachleat)
+ * Copyright © 2011–2014 Zach Leatherman (@zachleat)
  * Copyright © 2014 Kenneth Ormandy (@kennethormandy)
- *  License */
+ * MIT License
+ */
 
 (function(window, $) {
   'use strict';

@@ -3,12 +3,14 @@
   "title": "BigText",
   "version": "0.1.7a",
   "description": "Zach Leat’s BitText, without jQuery. Scale lines of text based on the space available.",
-  "keywords": [
-    "grunt",
-    "typography"
-  ],
   "homepage": "https://github.com/kennethormandy/bigtext",
+  "repository": "git://github.com/kennethormandy/bigtext.git",
   "bugs": "https://github.com/kennethormandy/bigtext/issues",
+  "license": "MIT",
+  "keywords": [
+    "typography",
+    "type"
+  ],
   "author": {
     "name": "Kenneth Ormandy",
     "email": "hello@kennethormandy.com",
@@ -22,10 +24,6 @@
     "twitter": "zachleat",
     "github": "zachleat",
     "url": "http://zachleat.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/zachleat/bigtext.git"
   },
   "scripts": {
     "test": "grunt test",
@@ -51,12 +49,10 @@
     "grunt-lintspaces": "~0.5.0",
     "grunt-mkdir": "~0.1.1"
   },
-  "peerDependencies": {},
   "engines": {
     "node": ">=0.8.0",
     "npm": ">=1.2.10"
   },
-  "license": "MIT",
   "config": {
     "grunt": "grunt",
     "src": "src",
