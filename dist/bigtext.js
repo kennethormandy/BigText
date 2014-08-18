@@ -67,14 +67,8 @@
       },
       bindResize: function(eventName, resizeFunction) {
         if(typeof window.Cowboy === 'undefined' || typeof window.Cowboy.throttle === 'undefined') {
-          if(!window.onresize) {
-            // This doesn’t work yet :(
-            console.log(eventName);
-            // window.onresize = debounce(resizeFunction, 100);
-            // window.removeEventListener(eventName, resizeFunction);
-          }
           window.removeEventListener(eventName);
-          window.addEventListener(eventName, debounce(resizeFunction, 100));
+          window.addEventListener(eventName, resizeFunction);
         } else {
           // https://github.com/cowboy/jquery-throttle-debounce
           window.addEventListener(eventName);
@@ -94,20 +88,9 @@
       },
       clearCss: function(id)
       {
-        // var el = document.getElementById(BigText.getStyleId(id));
-        // var styleEl = document.getElementsByTagName('head');
-        // console.log(styleEl, id);
-        // styleEl.parentNode.removeChild(styleEl);
-        // $(styleEl).remove(); // Not done
-        // el.parentNode.removeChild(styleEl);
-        // styleEl.innerHTML = '';
-        // console.log($$('#' + BigText.getStyleId(id)));
-        // console.log(document.getElementsByTagName('style'), BigText.getStyleId(id));
-        // console.log(head.children);
         var styleSheets = document.styleSheets;
-        forEach(styleSheets, function(sheetCSS, i) {
+        forEach(styleSheets, function(sheetCSS) {
           var sheet = sheetCSS.ownerNode;
-          console.log(i + '\n', sheet.id, BigText.getStyleId(id));
           if(sheet.id === BigText.getStyleId(id)) {
             return document.head.removeChild(sheet);
           }
@@ -176,7 +159,6 @@
           headCache.appendChild(BigText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
 
-        // console.log(this);
         // return trigger(this, 'bigtext:complete');
         return;
       }
@@ -221,17 +203,17 @@
     }
   }
 
-  function debounce(fn, delay)
-  {
-    var timer = null;
-    return function () {
-      var context = this, args = arguments;
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        fn.apply(context, args);
-      }, delay);
-    };
-  }
+  // function debounce(fn, delay)
+  // {
+  //   var timer = null;
+  //   return function () {
+  //     var context = this, args = arguments;
+  //     clearTimeout(timer);
+  //     timer = setTimeout(function () {
+  //       fn.apply(context, args);
+  //     }, delay);
+  //   };
+  // }
 
   function extend(out)
   {
