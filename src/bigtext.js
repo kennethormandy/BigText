@@ -88,11 +88,16 @@
       },
       clearCss: function(id)
       {
-        var styleId = BigText.getStyleId(id);
-        var styleEl = document.getElementById(styleId);
-        // document.getElementById(styleId).parentNode.removeChild(el);
-        $(styleEl).remove(); // Not done
-        // styleEl.parentNode.removeChild(styleEl);
+        var styleSheets = document.styleSheets;
+        forEach(styleSheets, function(sheetCSS, i) {
+          var sheet = sheetCSS.ownerNode;
+          console.log(i + '\n', sheet.id, BigText.getStyleId(id));
+          if(sheet.id === BigText.getStyleId(id)) {
+            console.log(do)
+            return document.head.removeChild(sheet);
+          }
+        });
+        // $(el).remove();
       },
       generateCss: function(id, linesFontSizes, lineWordSpacings, minFontSizes)
       {
@@ -389,8 +394,7 @@
     });
 
     if( !BigText.DEBUG_MODE ) {
-      $(c).remove();
-      // c.parentNode.removeChild(c);
+      c.parentNode.removeChild(c);
     } else {
       c.style.backgroundColor = 'rgba(255,255,255,.4)';
     }

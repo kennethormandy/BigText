@@ -94,11 +94,25 @@
       },
       clearCss: function(id)
       {
-        var styleId = BigText.getStyleId(id);
-        var styleEl = document.getElementById(styleId);
-        // document.getElementById(styleId).parentNode.removeChild(el);
-        $(styleEl).remove(); // Not done
+        // var el = document.getElementById(BigText.getStyleId(id));
+        // var styleEl = document.getElementsByTagName('head');
+        // console.log(styleEl, id);
         // styleEl.parentNode.removeChild(styleEl);
+        // $(styleEl).remove(); // Not done
+        // el.parentNode.removeChild(styleEl);
+        // styleEl.innerHTML = '';
+        // console.log($$('#' + BigText.getStyleId(id)));
+        // console.log(document.getElementsByTagName('style'), BigText.getStyleId(id));
+        // console.log(head.children);
+        var styleSheets = document.styleSheets;
+        forEach(styleSheets, function(sheetCSS, i) {
+          var sheet = sheetCSS.ownerNode;
+          console.log(i + '\n', sheet.id, BigText.getStyleId(id));
+          if(sheet.id === BigText.getStyleId(id)) {
+            return document.head.removeChild(sheet);
+          }
+        });
+        // $(el).remove();
       },
       generateCss: function(id, linesFontSizes, lineWordSpacings, minFontSizes)
       {
@@ -295,7 +309,6 @@
     c.style.top = BigText.DEBUG_MODE ? 0 : -9999;
 
     document.body.appendChild(c);
-    console.log(c);
 
     // font-size isn't the only thing we can modify, we can also mess with:
     // word-spacing and letter-spacing. WebKit does not respect subpixel
@@ -395,8 +408,7 @@
     });
 
     if( !BigText.DEBUG_MODE ) {
-      $(c).remove();
-      // c.parentNode.removeChild(c);
+      c.parentNode.removeChild(c);
     } else {
       c.style.backgroundColor = 'rgba(255,255,255,.4)';
     }
