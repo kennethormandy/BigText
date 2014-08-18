@@ -1,14 +1,8 @@
-(function(window, $) {
+(function(window, document, undefined) {
   'use strict';
-
-  // var $$ = function(selector) {
-  //   return document.querySelectorAll(selector);
-  // };
 
   var counter = 0,
     headCache = document.getElementsByTagName('head')[0],
-    oldBigText = window.BigText,
-    oldjQueryMethod = $.fn.bigtext,
     BigText = {
       DEBUG_MODE: false,
       DEFAULT_MIN_FONT_SIZE_PX: null,
@@ -17,14 +11,6 @@
       STYLE_ID: 'bigtext-id',
       LINE_CLASS_PREFIX: 'bigtext-line',
       EXEMPT_CLASS: 'bigtext-exempt',
-      noConflict: function(restore)
-      {
-        if(restore) {
-          $.fn.bigtext = oldjQueryMethod;
-          window.BigText = oldBigText;
-        }
-        return BigText;
-      },
       test: {
         wholeNumberFontSizeOnly: function() {
           if( !( 'getComputedStyle' in window ) || document.body == null ) {
@@ -61,12 +47,11 @@
       },
       bindResize: function(eventName, resizeFunction) {
         window.removeEventListener('rezie', resizeFunction);
-        if(typeof window.Cowboy !== 'undefined' && typeof window.Cowboy.throttle !== 'undefined') {
-          // https://github.com/cowboy/jquery-throttle-debounce
-          window.addEventListener(eventName, resizeFunction);
-        } else {
-          window.addEventListener('resize', resizeFunction, true);
-        }
+        // if(typeof window.Cowboy !== 'undefined' && typeof window.Cowboy.throttle !== 'undefined') {
+        //     window.addEventListener('resize', window.Cowboy.throttle(100, resizeFunction), false);
+        // } else {
+          window.addEventListener('resize', debounce(resizeFunction, 100), false);
+        // }
       },
       getStyleId: function(id)
       {
@@ -116,6 +101,8 @@
           childSelector: '',
           resize: true
         }, options || {});
+
+        // FIXME Only works if an array is passed in right now
 
         forEach(this, function(self)
         {
@@ -168,6 +155,9 @@
   // }
 
   function forEach(el, fn) {
+    if(!el.length) {
+      el = [el];
+    }
     Array.prototype.forEach.call(el, fn);
   }
 
@@ -194,17 +184,17 @@
     }
   }
 
-  // function debounce(fn, delay)
-  // {
-  //   var timer = null;
-  //   return function () {
-  //     var context = this, args = arguments;
-  //     clearTimeout(timer);
-  //     timer = setTimeout(function () {
-  //       fn.apply(context, args);
-  //     }, delay);
-  //   };
-  // }
+  function debounce(fn, delay)
+  {
+    var timer = null;
+    return function () {
+      var context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        fn.apply(context, args);
+      }, delay);
+    };
+  }
 
   function extend(out)
   {
@@ -263,14 +253,6 @@
   {
     var c = t.cloneNode(true);
     var tStyles = getComputedStyle(t);
-    //     fontFamily: $t.css('font-family'),
-    //     textTransform: $t.css('text-transform'),
-    //     wordSpacing: $t.css('word-spacing'),
-    //     letterSpacing: $t.css('letter-spacing'),
-    //     position: 'absolute',
-    //     left: BigText.DEBUG_MODE ? 0 : -9999,
-    //     top: BigText.DEBUG_MODE ? 0 : -9999
-    //   });
 
     addClass(c, 'bigtext-cloned');
 
@@ -395,7 +377,10 @@
     };
   }
 
-  $.fn.bigtext = BigText.mainMethod;
-  window.BigText = BigText;
 
-})(this, jQuery);
+  window.bigText = function(selector, options) {
+    return BigText.mainMethod.call(selector, options);
+  };
+
+
+}(window, document));
