@@ -160,7 +160,7 @@
         });
 
         // return trigger(this, 'bigtext:complete');
-        return;
+        return this;
       }
     };
 
