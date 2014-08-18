@@ -295,7 +295,6 @@
     c.style.top = BigText.DEBUG_MODE ? 0 : -9999;
 
     document.body.appendChild(c);
-    console.log(c);
 
     // font-size isn't the only thing we can modify, we can also mess with:
     // word-spacing and letter-spacing. WebKit does not respect subpixel
