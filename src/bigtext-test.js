@@ -55,7 +55,7 @@
       ok(!(( minWidth < width ) && ( width < maxWidth )), 'Pretest: Line ' + j + ' should not be max width (' + minWidth + ' < ' + width + ' < ' + maxWidth + ', font-size: ' + $(this).css('font-size') + ')');
     });
 
-    $test.bigtext(options);
+    bigText($test, options);
 
     ok('Class added.', $test.is('.bigtext'));
 
@@ -74,7 +74,7 @@
         maxHeight = expectedHeight + tolerance;
 
       ok('Line ' + j + ' class added.', $t.is('.bigtext-line' + j));
-      if($t.hasClass(BigText.EXEMPT_CLASS)) {
+      if($t.hasClass(bigText($test).EXEMPT_CLASS)) {
         // must be added to document to get font-size
         var defaultDocumentFontSize = parseInt($('<div/>').appendTo(document.body).css('font-size'), 10);
         equal(defaultDocumentFontSize, fontSize, 'Line ' + j + ' Font size must be unchanged');
@@ -116,7 +116,7 @@
   test('testCleanup', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
-    $('#test').bigtext();
+    bigText($('#test'));
 
     ok($('.bigtext-cloned').length === 0, 'Clone should be deleted.');
   });
