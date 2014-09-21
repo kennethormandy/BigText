@@ -97,8 +97,7 @@
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
     bigText(document.getElementById('test'));
-
-    equal($('#' + bigText(document.getElementById('test')).getStyleId()).length, 1, 'Test to make sure the style tag was inserted.');
+    equal(document.querySelectorAll('#' + bigText(document.getElementById('test')).getStyleId('test')).length, 1, 'Test to make sure the style tag was inserted.');
   });
 
   test('testDoubleStyleInjection', function()
