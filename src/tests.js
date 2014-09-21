@@ -1,8 +1,8 @@
-/* global bigText:true */
+/* global bigIdeasText:true */
 (function( w, $ ) {
   "use strict";
 
-  var BigTextTest = {},
+  var BigIdeasTextTest = {},
     ua = navigator.userAgent,
     ie = (function(){
 
@@ -25,29 +25,29 @@
   if( ie && ie <= 8 ||
     ua.indexOf( 'PhantomJS' ) > -1 && ua.indexOf( 'Linux' ) > -1 ) {
 
-    BigTextTest.tolerance = 14;
+    BigIdeasTextTest.tolerance = 14;
   } else {
-    BigTextTest.tolerance = 10;
+    BigIdeasTextTest.tolerance = 10;
   }
 
   // If the lines of text are blocks, testing their width will tell us nothing.
-  BigTextTest.init = function()
+  BigIdeasTextTest.init = function()
   {
     return this.css('float', 'left');
   };
 
-  BigTextTest.linesTest = function(selector, expectedWidth, options)
+  BigIdeasTextTest.linesTest = function(selector, expectedWidth, options)
   {
     options = $.extend( options, {} );
 
-    var tolerance = BigTextTest.tolerance,
+    var tolerance = BigIdeasTextTest.tolerance,
       minWidth = expectedWidth - tolerance,
       maxWidth = expectedWidth + tolerance,
       $test = $(selector),
       $lines = options.childSelector ? $test.find( options.childSelector ) : $test.children(),
       startingFontSize = parseInt($lines.eq(0).css('font-size'), 10);
 
-    BigTextTest.init.call($lines);
+    BigIdeasTextTest.init.call($lines);
 
     $lines.each(function(j)
     {
@@ -55,7 +55,7 @@
       ok(!(( minWidth < width ) && ( width < maxWidth )), 'Pretest: Line ' + j + ' should not be max width (' + minWidth + ' < ' + width + ' < ' + maxWidth + ', font-size: ' + $(this).css('font-size') + ')');
     });
 
-    bigText($test, options);
+    bigIdeasText($test, options);
 
     ok('Class added.', $test.is('.bigtext'));
 
@@ -74,7 +74,7 @@
         maxHeight = expectedHeight + tolerance;
 
       ok('Line ' + j + ' class added.', $t.is('.bigtext-line' + j));
-      if($t.hasClass(bigText($test).EXEMPT_CLASS)) {
+      if($t.hasClass(bigIdeasText($test).EXEMPT_CLASS)) {
         // must be added to document to get font-size
         var defaultDocumentFontSize = parseInt($('<div/>').appendTo(document.body).css('font-size'), 10);
         equal(defaultDocumentFontSize, fontSize, 'Line ' + j + ' Font size must be unchanged');
@@ -90,33 +90,33 @@
 
   test('testExists', function()
   {
-    ok(!!bigText);
-    ok(!!window.bigText);
+    ok(!!bigIdeasText);
+    ok(!!window.bigIdeasText);
   });
 
   test('testStyleInjection', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
-    bigText(document.getElementById('test'));
-    equal(document.querySelectorAll('#' + bigText(document.getElementById('test')).getStyleId('test')).length, 1, 'Test to make sure the style tag was inserted.');
+    bigIdeasText(document.getElementById('test'));
+    equal(document.querySelectorAll('#' + bigIdeasText(document.getElementById('test')).getStyleId('test')).length, 1, 'Test to make sure the style tag was inserted.');
   });
 
   test('testDoubleStyleInjection', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
     var $test = $('#test');
-    bigText($test);
-    bigText($test);
+    bigIdeasText($test);
+    bigIdeasText($test);
 
     // FIXME this jQuery result won't return more than one element.
-    ok($('#' + bigText(document.getElementById('test')).getStyleId('test')).length === 1, 'Test to make sure the style tag wasn’t inserted twice.');
+    ok($('#' + bigIdeasText(document.getElementById('test')).getStyleId('test')).length === 1, 'Test to make sure the style tag wasn’t inserted twice.');
   });
 
 
   test('testCleanup', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
-    bigText($('#test'));
+    bigIdeasText($('#test'));
 
     ok($('.bigtext-cloned').length === 0, 'Clone should be deleted.');
   });
@@ -125,36 +125,36 @@
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a single line.</div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testTwoLines', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is</div><div>a longer second line</div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testThreeLines', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is</div><div>a longer second line</div><div>An even longer third line.</div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testThreeLinesWithAList', function()
   {
     $('#qunit-fixture').html('<ol id="test" style="width:600px"><li>This is</li><li>a longer second line</li><li>An even longer third line.</li></ol>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testTwoElements', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is</div><div>a longer second line</div></div><div id="test2" style="width:400px"><div>This is</div><div>a longer second line</div></div>');
 
-    BigTextTest.linesTest('#test', 600);
-    BigTextTest.linesTest('#test2', 400);
+    BigIdeasTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test2', 400);
 
     notEqual($('#test').find('> div').eq(0).css('font-size'),
               $('#test2').find('> div').eq(0).css('font-size'),
@@ -169,23 +169,23 @@
   {
     $('#qunit-fixture').html('<div style="width: 600px"><div id="test" style="width: 50%"><div>This is a single line.</div></div></div>');
 
-    BigTextTest.linesTest('#test', 300);
+    BigIdeasTextTest.linesTest('#test', 300);
   });
 
   test('testNoChildren', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width: 600px">This is a single line.</div>');
 
-    BigTextTest.linesTest('#test', 300);
+    BigIdeasTextTest.linesTest('#test', 300);
   });
 
   test('testMaxFontSize', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>1</div></div>');
     var $test = $('#test');
-    bigText($test);
+    bigIdeasText($test);
 
-    equal(bigText(test).DEFAULT_MAX_FONT_SIZE_PX + 'px',
+    equal(bigIdeasText(test).DEFAULT_MAX_FONT_SIZE_PX + 'px',
       $('#test > div').css('font-size'),
       'Font size should equal the maximum.');
   });
@@ -194,7 +194,7 @@
   {
     $('#qunit-fixture').html('<div id="test" style="width:300px"><div>This</div></div>');
     var startingFontSize = parseInt($('#test > div').css('font-size'), 10);
-    bigText($('#test'));
+    bigIdeasText($('#test'));
 
     ok(parseInt($('#test > div').css('font-size'), 10) > startingFontSize, 'Font size must be larger than the starting pixel size.');
   });
@@ -203,7 +203,7 @@
   {
     $('#qunit-fixture').html('<div id="test" style="width:400px"><div>This is</div><div class="bigtext-exempt">a longer second line</div></div>');
 
-    BigTextTest.linesTest('#test', 400);
+    BigIdeasTextTest.linesTest('#test', 400);
   });
 
   test('testExemptLineWithChild', function()
@@ -213,10 +213,10 @@
       $exempt;
 
     $('#qunit-fixture').html('<div id="test" style="width:400px"><div>This is</div><div class="bigtext-exempt">a longer <span>second</span> line</div></div>');
-    $exempt = $('.bigtext-exempt');
+    $exempt = $('.bigIdeasText-exempt');
 
     defaultExemptLineFontSize = $exempt.css('font-size');
-    bigText(document.getElementById('test'));
+    bigIdeasText(document.getElementById('test'));
     childFontSize = $exempt.css('font-size');
 
     equal(defaultExemptLineFontSize, childFontSize, 'Exempt line’s child font size must be unchanged');
@@ -229,7 +229,7 @@
     $(document.head || 'head').append( '<style id="' + id + '">#test { width: 600px; font-family: Georgia; font-weight: bold; }</style>' );
     $('#qunit-fixture').html('<div id="test"><div>This is a single line.</div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
     $('#' + id).remove();
   });
 
@@ -237,13 +237,13 @@
   {
     $('#qunit-fixture').html('<div id="test" style="max-width:600px"><div>This is a single line.</div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testMinFontSize', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a super long line that will probably be too long for this single line. This is a super long line that will probably be too long for this single line.</div></div>');
-    bigText($('#test'), {
+    bigIdeasText($('#test'), {
       minfontsize: 16
     });
 
@@ -255,7 +255,7 @@
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div class="testbigtext-line1">This is a single line.</div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
     ok($('#test > div').hasClass('testbigtext-line1'), 'First line should still have testbigtext-line1 class');
     ok(!$('#test > div').hasClass('test'), 'First line should not have test class');
   });
@@ -264,21 +264,21 @@
   {
     $('#qunit-fixture').html('<div style="text-transform: uppercase"><div id="test" style="width:600px"><div class="testbigtext-line1">This is a single line.</div></div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testWordSpacing', function()
   {
     $('#qunit-fixture').html('<div style="word-spacing: 3px"><div id="test" style="width:600px"><div class="testbigtext-line1">This is a single line.</div></div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testLetterSpacing', function()
   {
     $('#qunit-fixture').html('<div style="letter-spacing: 3px"><div id="test" style="width:600px"><div class="testbigtext-line1">This is a single line.</div></div></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testSizes', function()
@@ -286,7 +286,7 @@
     for( var j = 200, k = 800; j<k; j += 50 ) {
       $('#qunit-fixture').html('<div id="test" style="width:' + j + 'px"><div>This is a single line.</div></div>');
 
-      BigTextTest.linesTest('#test', j);
+      BigIdeasTextTest.linesTest('#test', j);
     }
   });
 
@@ -294,13 +294,13 @@
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><span>This is</span><span>a longer second line</span></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 
   test('testMixtureChildren', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is</div><span>a longer second line</span></div>');
 
-    BigTextTest.linesTest('#test', 600);
+    BigIdeasTextTest.linesTest('#test', 600);
   });
 }( this, jQuery ));

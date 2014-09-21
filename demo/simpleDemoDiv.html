@@ -4,20 +4,20 @@
         <meta charset="utf-8"/>
         <title>BigText on a List</title>
         <style>
-            #test {
+            .example {
                 width: 100%;
                 font-weight: bold;
             }
         </style>
     </head>
     <body>
-        <div id="test">
+        <div id="example" class="example">
             <div>This is</div>
             <div>a longer second line</div>
-            <div class="bigtext-exempt">and an <span>exempt</span> line.</div>
+            <div class="bigIdeasText-exempt">and an <span>exempt</span> line.</div>
         </div>
 
-        <div id="test2" style="width:600px"><div>This is a single line.</div></div>
+        <div id="example2" style="width:600px"><div>This is a single line.</div></div>
 
         <script src="../dist/big-ideas-text.js"></script>
         <script>
@@ -26,10 +26,10 @@
         //
         // $('#test').bt();
         // $('#test2').bt();
-        var test = document.getElementById('test');
-        var test2 = document.getElementById('test2');
-        bigText(test);
-        bigText(test2);
+        var ex = document.getElementById('example');
+        var ex2 = document.getElementById('example2');
+        bigIdeasText(ex);
+        bigIdeasText(ex2);
 
         </script>
     </body>

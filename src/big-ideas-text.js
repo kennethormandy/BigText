@@ -3,14 +3,14 @@
 
   var counter = 0,
     headCache = document.getElementsByTagName('head')[0],
-    BigText = {
+    BigIdeasText = {
       DEBUG_MODE: false,
       DEFAULT_MIN_FONT_SIZE_PX: null,
       DEFAULT_MAX_FONT_SIZE_PX: 528,
-      GLOBAL_STYLE_ID: 'bigtext-style',
-      STYLE_ID: 'bigtext-id',
-      LINE_CLASS_PREFIX: 'bigtext-line',
-      EXEMPT_CLASS: 'bigtext-exempt',
+      GLOBAL_STYLE_ID: 'bigIdeasText-style',
+      STYLE_ID: 'bigIdeasText-id',
+      LINE_CLASS_PREFIX: 'bigIdeasText-line',
+      EXEMPT_CLASS: 'bigIdeasText-exempt',
       test: {
         wholeNumberFontSizeOnly: function() {
           if( !( 'getComputedStyle' in window ) || document.body == null ) {
@@ -33,15 +33,15 @@
         wholeNumberFontSizeOnly: undefined
       },
       init: function() {
-        if( BigText.supports.wholeNumberFontSizeOnly === undefined ) {
-          BigText.supports.wholeNumberFontSizeOnly = BigText.test.wholeNumberFontSizeOnly();
+        if( BigIdeasText.supports.wholeNumberFontSizeOnly === undefined ) {
+          BigIdeasText.supports.wholeNumberFontSizeOnly = BigIdeasText.test.wholeNumberFontSizeOnly();
         }
 
-        if(!document.getElementById(BigText.GLOBAL_STYLE_ID)) {
-          headCache.appendChild(BigText.generateStyleTag(BigText.GLOBAL_STYLE_ID, [
-            '.bigtext * { white-space: nowrap; }',
-            '.bigtext > * { display: block; }',
-            '.bigtext .' + BigText.EXEMPT_CLASS + ', .bigtext .' + BigText.EXEMPT_CLASS + ' * { white-space: normal; }'
+        if(!document.getElementById(BigIdeasText.GLOBAL_STYLE_ID)) {
+          headCache.appendChild(BigIdeasText.generateStyleTag(BigIdeasText.GLOBAL_STYLE_ID, [
+            '.bigIdeasText * { white-space: nowrap; }',
+            '.bigIdeasText > * { display: block; }',
+            '.bigIdeasText .' + BigIdeasText.EXEMPT_CLASS + ', .bigIdeasText .' + BigIdeasText.EXEMPT_CLASS + ' * { white-space: normal; }'
           ]));
         }
       },
@@ -55,7 +55,7 @@
       },
       getStyleId: function(id)
       {
-        return BigText.STYLE_ID + '-' + id;
+        return BigIdeasText.STYLE_ID + '-' + id;
       },
       generateStyleTag: function(id, css)
       {
@@ -69,7 +69,7 @@
         var styleSheets = document.styleSheets;
         forEach(styleSheets, function(sheetCSS) {
           var sheet = sheetCSS.ownerNode;
-          if(sheet.id === BigText.getStyleId(id)) {
+          if(sheet.id === BigIdeasText.getStyleId(id)) {
             return document.head.removeChild(sheet);
           }
         });
@@ -78,10 +78,10 @@
       {
         var css = [];
 
-        BigText.clearCss(id);
+        BigIdeasText.clearCss(id);
 
         for(var j=0, k=linesFontSizes.length; j<k; j++) {
-          css.push('#' + id + ' .' + BigText.LINE_CLASS_PREFIX + j + ' {' +
+          css.push('#' + id + ' .' + BigIdeasText.LINE_CLASS_PREFIX + j + ' {' +
             (minFontSizes[j] ? ' white-space: normal;' : '') +
             (linesFontSizes[j] ? ' font-size: ' + linesFontSizes[j] + 'px;' : '') +
             (lineWordSpacings[j] ? ' word-spacing: ' + lineWordSpacings[j] + 'px;' : '') +
@@ -89,15 +89,15 @@
         }
 
 
-        return BigText.generateStyleTag(BigText.getStyleId(id), css);
+        return BigIdeasText.generateStyleTag(BigIdeasText.getStyleId(id), css);
       },
       mainMethod: function(options)
       {
-        BigText.init();
+        BigIdeasText.init();
 
         options = extend({
-          minfontsize: BigText.DEFAULT_MIN_FONT_SIZE_PX,
-          maxfontsize: BigText.DEFAULT_MAX_FONT_SIZE_PX,
+          minfontsize: BigIdeasText.DEFAULT_MIN_FONT_SIZE_PX,
+          maxfontsize: BigIdeasText.DEFAULT_MAX_FONT_SIZE_PX,
           childSelector: '',
           resize: true
         }, options || {});
@@ -111,36 +111,36 @@
           var id = self.getAttribute('id');
           var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
 
-          addClass(self, 'bigtext');
+          addClass(self, 'bigIdeasText');
 
           if(!id) {
             // KO changed approach here
-            id = BigText.getStyleId(counter++);
+            id = BigIdeasText.getStyleId(counter++);
             self.setAttribute('id', id);
           }
 
           if(options.resize) {
-            BigText.bindResize('resize.bigtext-event-' + id, function()
+            BigIdeasText.bindResize('resize.bigIdeasText-event-' + id, function()
             {
               // TODO only call this if the width has changed.
-              BigText.mainMethod.call(document.getElementById(id), options);
+              BigIdeasText.mainMethod.call(document.getElementById(id), options);
             });
           }
 
-          BigText.clearCss(id);
+          BigIdeasText.clearCss(id);
 
           if(children.length >= 1) {
             forEach(children, function(child, lineNumber){
-              child.className = child.className.replace(new RegExp('\\b' + BigText.LINE_CLASS_PREFIX + '\\d+\\b'), '');
-              addClass(child, BigText.LINE_CLASS_PREFIX + lineNumber);
+              child.className = child.className.replace(new RegExp('\\b' + BigIdeasText.LINE_CLASS_PREFIX + '\\d+\\b'), '');
+              addClass(child, BigIdeasText.LINE_CLASS_PREFIX + lineNumber);
             });
           }
 
           var sizes = calculateSizes(self, children, maxWidth, options.maxfontsize, options.minfontsize);
-          headCache.appendChild(BigText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
+          headCache.appendChild(BigIdeasText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
 
-        // return trigger(this, 'bigtext:complete');
+        // return trigger(this, 'bigIdeasText:complete');
         return this;
       }
     };
@@ -165,7 +165,7 @@
 
   function getComputedStyle(el, pseudo) {
     pseudo = pseudo || null;
-    if (!BigText.supports.wholeNumberFontSizeOnly) {
+    if (!BigIdeasText.supports.wholeNumberFontSizeOnly) {
       return window.getComputedStyle(el, pseudo);
     }
   }
@@ -256,15 +256,15 @@
     var c = t.cloneNode(true);
     var tStyles = getComputedStyle(t);
 
-    addClass(c, 'bigtext-cloned');
+    addClass(c, 'bigIdeasText-cloned');
 
     c.style.fontFamily = tStyles.getPropertyValue('font-family');
     c.style.textTransform = tStyles.getPropertyValue('text-transform');
     c.style.wordSpacing = tStyles.getPropertyValue('word-spacing');
     c.style.letterSpacing = tStyles.getPropertyValue('letter-spacing');
     c.style.position = 'absolute';
-    c.style.left = BigText.DEBUG_MODE ? 0 : -9999;
-    c.style.top = BigText.DEBUG_MODE ? 0 : -9999;
+    c.style.left = BigIdeasText.DEBUG_MODE ? 0 : -9999;
+    c.style.top = BigIdeasText.DEBUG_MODE ? 0 : -9999;
 
     document.body.appendChild(c);
 
@@ -280,13 +280,13 @@
     if(children.length >= 1) {
       forEach(children, function(line) {
         // TODO replace 8, 4 with a proportional size to the calculated font-size.
-        var intervals = BigText.supports.wholeNumberFontSizeOnly ? [8, 4, 1] : [8, 4, 1, 0.1];
+        var intervals = BigIdeasText.supports.wholeNumberFontSizeOnly ? [8, 4, 1] : [8, 4, 1, 0.1];
         var lineMax;
         var newFontSize;
 
         line.style.float = 'left';
 
-        if(hasClass(line, BigText.EXEMPT_CLASS)) {
+        if(hasClass(line, BigIdeasText.EXEMPT_CLASS)) {
           fontSizes.push(null);
           ratios.push(null);
           minFontSizes.push(false);
@@ -339,7 +339,7 @@
         var interval = 1;
         var maxWordSpacing;
 
-        if(hasClass(line, BigText.EXEMPT_CLASS)) {
+        if(hasClass(line, BigIdeasText.EXEMPT_CLASS)) {
           wordSpacings.push(null);
           return;
         }
@@ -367,7 +367,7 @@
       });
     }
 
-    if( !BigText.DEBUG_MODE ) {
+    if( !BigIdeasText.DEBUG_MODE ) {
       c.parentNode.removeChild(c);
     } else {
       c.style.backgroundColor = 'rgba(255,255,255,.4)';
@@ -381,9 +381,9 @@
     };
   }
 
-  window.bigText = function(selector, options) {
-    BigText.mainMethod.call(selector, options);
-    return BigText;
+  window.bigIdeasText = function(selector, options) {
+    BigIdeasText.mainMethod.call(selector, options);
+    return BigIdeasText;
   };
 
 }(window, document));

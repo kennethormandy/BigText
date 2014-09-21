@@ -2,9 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
-        <title>BigText on a List</title>
+        <title>Big Ideas Text on a List</title>
         <style>
-            #test {
+            .example {
                 width: 500px;
                 font-weight: 400;
                 font-family: 'Edmondsans';
@@ -15,10 +15,10 @@
         </style>
     </head>
     <body>
-        <div id="test">
+        <div id="example" class="example">
             <div>This is</div>
             <div>a longer second line</div>
-            <div class="bigtext-exempt">and an <span>exempt</span> line.</div>
+            <div class="bigIdeasText-exempt">and an <span>exempt</span> line.</div>
         </div>
 
         <script src="../dist/big-ideas-text.js"></script>
@@ -30,8 +30,8 @@
                     urls : ['http://cdn.typebrigade.com/css/fonts-v0.1.0.css'] // URL to css
                 },
                 active: function() {
-                    var test = document.getElementById('test');
-                    bigText(test);
+                    var ex = document.getElementById('example');
+                    bigIdeasText(ex);
                 }
             });
         </script>
