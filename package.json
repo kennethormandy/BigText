@@ -2,7 +2,7 @@
   "name": "big-ideas-text",
   "title": "Big Ideas Text",
   "version": "0.1.0",
-  "description": "Dynamically scale lines of text within a container. @zachleat’s BitText, without jQuery.",
+  "description": "Dynamically scale lines of text within a container.",
   "homepage": "https://github.com/kennethormandy/big-ideas-text",
   "repository": "git://github.com/kennethormandy/big-ideas-text.git",
   "bugs": "https://github.com/kennethormandy/big-ideas-text/issues",

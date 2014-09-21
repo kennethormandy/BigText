@@ -1,6 +1,6 @@
 {
-  "version": "0.1.7a",
   "name": "big-ideas-text",
+  "version": "0.1.0",
   "main": ["dist/big-ideas-text.js"],
   "ignore": [
     "**/.*"
