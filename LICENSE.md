@@ -1,5 +1,5 @@
-Copyright © 2013–2014 Zach Leatherman
-Copyright © 2014 Kenneth Ormandy
+Copyright © 2013–2014 [Zach Leatherman](http://zachleat.com)
+Copyright © 2014 [Kenneth Ormandy](http://kennethormandy.com)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

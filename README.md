@@ -1,39 +1,77 @@
-# BigText
+[![Big Ideas Text wordmark](assets/wordmark.png)](http://kennethormandy.com/journal/big-ideas-text)
 
-[![Build Status](https://travis-ci.org/zachleat/BigText.png?branch=master)](https://travis-ci.org/zachleat/BigText)
+***
 
-## BigText Makes Text Big 
+# Big Ideas Text
 
+Dynamically scale lines of text within a container. No jQuery required.
+
+* Read the blog post, [Big Ideas Text](http://kennethormandy.com/journal/normalize-opentype-css)
+* View a demo
+* Read the comparison between [FitText, Fitter Happier Text, BigText, and Big Ideas Text](http://kennethormandy.com/journal/fitter-happier-text-and-big-ideas-text)
+
+[![Build Status](https://travis-ci.org/kennethormandy/big-ideas-text.png?branch=master)](https://travis-ci.org/kennethormandy/big-ideas-text)
+
+<!--
 * Read the [original blog post](http://www.zachleat.com/web/bigtext-makes-text-big/)
 * Play around on the [demo](http://zachleat.github.io/BigText/demo/wizard.html)
 * Watch the [video](http://www.youtube.com/watch?v=OuqB6e6NPRM)
+ -->
 
-## [Download bigtext.js](https://zachleat.github.io/BigText/dist/bigtext.js)
+## Getting started
 
-Or use [bower](http://bower.io/): `bower install bigtext`
+Big Ideas Text aims to be as easy to use as the original [BigText](https://github.com/zachleat/BigText). If it’s not, please [open an issue](https://github.com/kennethormandy/big-ideas-text/issues). Get the latest version of the CSS file here:
 
-## [Run the Tests](http://zachleat.github.io/BigText/test/test.html)
+[<img alt="Get the latest version of Big Ideas Text" src="assets/download.png" width="150px" />](https://github.com/kennethormandy/big-ideas-text/blob/master/dist/big-ideas-text.js)
+
+Alternatively, install it with the package manager and build tool of your choice:
+
+#### With npm
+
+```
+npm install kennethormandy/big-ideas-text
+```
+
+#### With Component
+
+```bash
+component install kennethormandy/big-ideas-text
+```
+
+#### With bower
+
+```bash
+bower install big-ideas-text
+```
 
 ## Requirements
 
-1. jQuery
-1. A block level parent element. BigText will force all children to be block level as well.
+1. ~~jQuery~~ __No jQuery required!__
+2. A block level parent element. Big Ideas Text will force all children to be block level as well.
 
 ## Learn More
 
-BigText works best on browsers that support [subpixel font scaling](http://status.modern.ie/subpixelfontscaling). In order to best serve sizes to all browsers, BigText will adjust `word-spacing` as well as `font-size`.
+Big Ideas Text works best on browsers that support [subpixel font scaling](http://status.modern.ie/subpixelfontscaling). In order to best serve sizes to all browsers, it will adjust `word-spacing` as well as `font-size`.
 
 ## Examples
 
 ### Simple Example
 
-    <div id="bigtext">
-        <span>BIGTEXT</span>
-        <span>Makes Text Big</span>
-    </div>
-    <script>
-    $('#bigtext').bigtext();
-    </script>
+```html
+<div id="example">
+  <span>Don’t get any</span>
+  <span>big ideas</span>
+  <span>They’re not gonna happen</span>
+</div>
+<script>
+  var ex = document.getElementById('example');
+  bigText(ex);
+</script>
+```
+
+<!--
+If this is still the best approach,
+I will make the library take care of it
 
 ### Better, Progressive Enhancement-Based Example
 
@@ -46,151 +84,170 @@ Use `display: inline` children (like a `span`) so the text will flow correctly i
     <script>
     // Only BigText on “new-ish” browsers
     if( 'querySelectorAll' in document ) {
-        $('#bigtext').bigtext();    
+        $('#bigtext').bigtext();
     }
-    </script>
+    </script> -->
 
 ### Using a List (ordered/unordered)
 
-    <ol id="bigtext">
-        <li>BIGTEXT</li>
-        <li>Makes Text Big</li>
-    </ol>
-    <script>
-    $('#bigtext').bigtext();
-    </script>
+```html
+<ol id="example">
+  <li>Don’t get any</li>
+  <li>big ideas</li>
+  <li>They’re not gonna happen</li>
+</ol>
+<script>
+  var ex = document.getElementById('example');
+  bigText(ex);
+</script>
+```
 
 ### Restrict to a subset of children
 
 #### Opt-in children with JS
 
-    <div id="bigtext">
-        <p>BIGTEXT</p>
-        <p>Makes Text Big</p>
-    </div>
-    <script>
-    $('#bigtext').bigtext({
-        childSelector: '> p'
-    });
-    </script>
+```html
+<div id="example">
+  <p>Don’t get any</p>
+  <span>big ideas</span>
+  <p>They’re not gonna happen</p>
+</div>
+<script>
+  var ex = document.getElementById('example');
+  bigText(ex, {
+    childSelector: '> p'
+  });
+</script>
+```
 
 #### Opt-out lines using markup
 
-    <ol id="bigtext">
-        <li>BIGTEXT</li>
-        <li class="bigtext-exempt">Makes Text Big</li>
-    </ol>
-    <script>
-    $('#bigtext').bigtext();
-    </script>
+```html
+<ol id="example">
+  <li>Don’t get any</li>
+  <li class="bigIdeasText-exempt">big ideas</li>
+  <li>They’re not gonna happen</li>
+</ol>
+<script>
+  var ex = document.getElementById('example');
+  bigText(ex);
+</script>
 
 
-### Mix and Match Fonts
+### Mix and Match Typefaces
 
-    <ol id="bigtext">
-        <li>
-            <span style="font-family: sans-serif">BIG</span>
-            <span style="font-family: serif">TEXT</span>
-        </li>
-        <li>Makes Text Big</li>
-    </ol>
-    <script>
-    $('#bigtext').bigtext();
-    </script>
+```html
+<ol id="example">
+  <li>Don’t get any</li>
+  <li>
+    <span style="font-family: 'Avenir Next', sans-serif">big</span>
+    <span style="font-family: 'Georgia', serif">ideas</span>
+  </li>
+  <li>They’re not gonna happen</li>
+  <li></li>
+</ol>
+<script>
+  var ex = document.getElementById('example');
+  bigText(ex);
+</script>
+```
 
-Works also with `letter-spacing`, `word-spacing`, and `text-transform`.
+Also works with `letter-spacing`, `word-spacing`, and `text-transform`.
 
-### Using with Custom Font-Face
+### Use Big Ideas Text with the WebFontLoader
 
-**Warning**: a known issue exists with the [Google/TypeKit font loader in WebKit](https://github.com/typekit/webfontloader/issues/26).
+Whatever web font service you are using, it’s likely built upon [WebFontLoader](https://github.com/typekit/webfontloader). You can use its `active` callback to initialise Big Ideas Text once your fonts have loaded.
 
-    <div id="bigtext">
-        <span>BIGTEXT</span>
-        <span>Makes Text Big</span>
-    </div>
-    <script src="//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
-    <script>
-    $(function() {
-        WebFont.load({
-            custom: {
-                families: ['LeagueGothicRegular'], // font-family name
-                urls : ['css/fonts/league-gothic/stylesheet.css'] // URL to css
-            },
-            active: function() {
-                $('#bigtext').bigtext();
-            }
-        });
-    });
-    </script>
+```html
+<script>
+  WebFontConfig = {
+    google: { families: [ 'Fira+Sans::latin' ] },
+    active: function() {
+      var ex = document.getElementById('example')
+      bigText(ex);
+    }
+  };
+</script>
+<script async defer  src="//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+<div id="example">
+  <span>Don’t get any</span>
+  <span>big ideas</span>
+  <span>They’re not gonna happen</span>
+</div>
+```
 
 ### Change the default max font size
 
-    <div id="bigtext">
-        <span>BIG</span><!-- the shorter the line, the larger the size required --> 
-    </div>
-    <script>
-    $('#bigtext').bigtext({
-        maxfontsize: 60 // default is 528 (in px)
-    });
-    </script>
+Shorter lines means larger text sizes. If you’d like to specify a maximum font size:
+
+```html
+<div id="example">
+    <span>BIG</span>
+</div>
+<script>
+  var ex = document.getElementById('example');
+  bigText(ex, {
+      maxfontsize: 60 // Default is `528px`
+  });
+</script>
+```
 
 ### Adding a default min font size
 
-    <div id="bigtext">
-        <span>This is a super long line that will probably be resized to epically small proportions. We need a minimum font size!</span>
-    </div>
-    <script>
-    $('#bigtext').bigtext({
-        minfontsize: 16 // default is null
-    });
-    </script>
+The following `span` houses a a super long line that will probably be resized to epically small proportions. A minimum font size will improve the situation.
 
-### Is your text static and unchanging?
+```html
+<div id="example">
+    <span>Don’t get any big ideas / They’re not gonna happen / You paint yourself white / And fill up with noise / But there’ll be something missing</span>
+</div>
+<script>
+  $('#bigtext').bigtext({
+      minfontsize: 16 // Default is `null`
+  });
+</script>
+```
 
-See [Paravel's FitText plugin](http://fittextjs.com/). Curious how the two plugins compare? I've written a full [comparison between FitText and BigText](http://www.zachleat.com/web/fittext-and-bigtext/).
+### Another one of these?
+
+You have a few options if you’d like to scale text in this manner.  If your text is static and unchanging, take a look at:
+
+- [Paravel’s FitText jQuery plugin](http://fittextjs.com/)
+- [Brent Jackson’s Fitter Happier Text](https://github.com/jxnblk/fitter-happier-text)
+
+If your text is dynamic, I’d reccomend using this plugin. If you are already have jQuery as a dependency and don’t plan on changing that anytime soon, [Zack Leatherman’s original BigText plugin]() might be the right option.
+
+I’m in the process of writing a comparison of all four libraries (akin to [this post](www.zachleat.com/web/fittext-and-bigtext/)). If you’d like an email when it’s done, you can sign up for my [web typography newsletter](http://kennethormandy.com/journal/newsletter).
 
 ## Extra Features
 
-### Re-BigText on Resize (Responsive BigText)
+### _Responsive_ support
 
-BigText does not implement its own debounced resize event, to reduce duplicate code. However, it does search for existing implementations. For example, [Ben Alman's Throttle/Debounce plugin](https://github.com/cowboy/jquery-throttle-debounce) or [Louis-Remi Babe's SmartResize](https://github.com/lrbabe/jquery-smartresize/), in that order.  If no debounced plugin is found, BigText will bind to the native resize event.
+Big Ideas Text includes its own debounced resize event.
 
 ### Debug Mode
 
-BigText uses an off-canvas detached node to improve performance when sizing. Setting `DEBUG_MODE` to true will leave this detached node on the canvas for visual inspection for problem resolution.
+Big Ideas Text uses an off-canvas detached node to improve performance when sizing. Setting `DEBUG_MODE` to true will leave this detached node on the canvas for visual inspection for problem resolution.
 
-    BigText.DEBUG_MODE = true;
+```js
+var ex = document.getElementById('example');
+bigText(ex).DEBUG_MODE = true;
+```
 
 ## Common Problems
 
-### Lines Wrapping Pre-BigText
-The starting font-size must be small enough to guarantee that each individual line is not wrapping pre-BigText. If the line is too long, BigText will not size it correctly.
-    
-## Releases
+__Lines Wrapping Pre-BigText__ The starting font-size must be small enough to guarantee that each individual line is not wrapping pre-Big Ideas Text. If the line is too long, Big Ideas Text will not size it correctly.
 
-* `v0.1.0` Initial release
-* `v0.1.1` Added line exempt feature.
-* `v0.1.2` Responsive BigText resizes with media queries and resize events (optionally debounced).
-* `v0.1.3`
-* `v0.1.4` on `2013-08-24` Numerous bug fixes, improved accuracy, adds debug mode. 
-* `v0.1.5` on `2013-10-14` BigText uses all children by default (#40)
-* `v0.1.6` Various bug fixes.
+## Contributing
 
-
-## Using the repo
-
-Run these commands:
-
- * `npm install`
- * `bower install`
- * `grunt`
-
-## Configuring Grunt
-
-Rather than one giant `Gruntfile.js`, this project is using a modular Grunt setup. Each individual grunt configuration option key has its own file located in `grunt/config-lib/` (readonly upstream configs, do not modify these directly) or `grunt/config/` (project specific configs). You may use the same key in both directories, the objects are smartly combined using [Lo-Dash merge](http://lodash.com/docs#merge).
-
-For concatenation in the previous Gruntfile setup, you’d add another key to the giant object passed into `grunt.initConfig` like this: `grunt.initConfig({ concat: { /* YOUR CONFIG */ } });`. In the new configuration, you’ll create a `grunt/config/concat.js` with `module.exports = { /* YOUR CONFIG */ };`.
+Thanks for considering contributing! There’s information about how to [get started with Big Ideas Text locally here](CONTRIBUTING.md).
 
 ## License
 
-[MIT License](http://en.wikipedia.org/wiki/MIT_License)
+[The MIT License (MIT)](LICENSE.md)
+
+Copyright © 2014 [Kenneth Ormandy](http://kennethormandy.com)
+
+Zack Leatherman wrote the original [BigText](https://github.com/zachleat/BigText).<br/>
+Brent Jackson [inspired](https://github.com/jxnblk/fitter-happier-text/issues/1) the Radiohead-themed name<br/>
+The lyrics in the examples are from Radiohead’s _Nude_, colloquially _[Big Ideas (Don’t Get Any)](http://www.youtube.com/watch?v=gm-Fyt1F0O4)_.<br/>
+Thanks to my friends and co-workers at [Chloi Inc.](http://chloi.io)
