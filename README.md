@@ -6,7 +6,7 @@
 
 Dynamically scale lines of text within a container. No jQuery required.
 
-* Read the blog post, [Big Ideas Text](http://kennethormandy.com/journal/normalize-opentype-css)
+* Read the blog post, [Big Ideas Text](http://kennethormandy.com/journal/big-ideas-text)
 * View a demo
 * Read the comparison between [FitText, Fitter Happier Text, BigText, and Big Ideas Text](http://kennethormandy.com/journal/fitter-happier-text-and-big-ideas-text)
 
@@ -233,7 +233,7 @@ var ex = document.getElementById('example');
 bigText(ex).DEBUG_MODE = true;
 ```
 
-## Common Problems
+## Caveats
 
 __Lines Wrapping Pre-BigText__ The starting font-size must be small enough to guarantee that each individual line is not wrapping pre-Big Ideas Text. If the line is too long, Big Ideas Text will not size it correctly.
 

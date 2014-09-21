@@ -1,12 +1,13 @@
 {
-  "name": "bigtext",
-  "title": "BigText",
-  "version": "0.1.7a",
-  "description": "Zach Leat’s BitText, without jQuery. Scale lines of text based on the space available.",
-  "homepage": "https://github.com/kennethormandy/bigtext",
-  "repository": "git://github.com/kennethormandy/bigtext.git",
-  "bugs": "https://github.com/kennethormandy/bigtext/issues",
+  "name": "big-ideas-text",
+  "title": "Big Ideas Text",
+  "version": "0.1.0",
+  "description": "Dynamically scale lines of text within a container. @zachleat’s BitText, without jQuery.",
+  "homepage": "https://github.com/kennethormandy/big-ideas-text",
+  "repository": "git://github.com/kennethormandy/big-ideas-text.git",
+  "bugs": "https://github.com/kennethormandy/big-ideas-text/issues",
   "license": "MIT",
+  "main": "dist/big-ideas-text.js",
   "keywords": [
     "typography",
     "type"
@@ -18,14 +19,18 @@
     "github": "kennethormandy",
     "url": "http://kennethormandy.com"
   },
-  "originalAuthor": {
-    "name": "Zach Leatherman",
-    "email": "zachleatherman@gmail.com",
-    "twitter": "zachleat",
-    "github": "zachleat",
-    "url": "http://zachleat.com"
-  },
+  "contributors":
+  [ "Zach Leatherman <zachleatherman@gmail.com> (http://zachleat.com)"
+  , "Jordan Sitkin"
+  , "Francisco Giordano"
+  , "Igor Ribeio Lima <lima.igorribeiro@gmail.com>"
+  , "bcaller"
+  , "James Young <jmeyoung+github@gmail.com> (http://jamsyoung.com)"
+  , "Phil Freo <phil@philfreo.com> (http://philfreo.com)"
+  , "Kenneth Ormandy <hello@kennethormandy.com> (http://kennethormandy.com)"
+  ],
   "scripts": {
+    "start": "grunt",
     "test": "grunt test",
     "postinstall": "bower install"
   },
@@ -50,7 +55,7 @@
     "grunt-mkdir": "~0.1.1"
   },
   "engines": {
-    "node": ">=0.8.0",
+    "node": ">=0.10.0",
     "npm": ">=1.2.10"
   },
   "config": {

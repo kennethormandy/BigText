@@ -1,13 +1,10 @@
 {
-  "name": "bigtext",
   "version": "0.1.7a",
-  "main": ["dist/bigtext.js"],
+  "name": "big-ideas-text",
+  "main": ["dist/big-ideas-text.js"],
   "ignore": [
     "**/.*"
   ],
-  "dependencies": {
-    "jquery": ">=1.9.1"
-  },
   "devDependencies": {
     "qunit": ">=1.12.0"
   }

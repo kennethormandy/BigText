@@ -1,8 +1,8 @@
 module.exports = {
 	js: {
-		src: ["src/bigtext.js"]
+		src: ["src/big-ideas-text.js"]
 	},
 	jstest: {
-		src: ["src/bigtext-test.js"]
+		src: ["src/tests.js"]
 	}
 };

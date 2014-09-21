@@ -1,7 +1,7 @@
 /*!
  * <%= pkg.title || pkg.name %> v<%= pkg.version %>, <%= grunt.template.today("yyyy-mm-dd") %>
 <%= pkg.homepage ? " * " + pkg.homepage : "" %>
- * Copyright © 2011–2014 <%= pkg.originalAuthor.name %> (@<%= pkg.originalAuthor.twitter %>)
+ * Copyright © 2011–2014 <%= pkg.contributors[0].split('<')[0] %>
  * Copyright © <%= grunt.template.today("yyyy") %> <%= pkg.author.name %> (@<%= pkg.author.twitter %>)
  * <%= pkg.license %> License
  */
