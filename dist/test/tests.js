@@ -103,9 +103,9 @@
   test('testDoubleStyleInjection', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
-    var test = $('#test');
-    bigText(test);
-    bigText(test);
+    var $test = $('#test');
+    bigText($test);
+    bigText($test);
 
     // FIXME this jQuery result won't return more than one element.
     ok($('#' + bigText(document.getElementById('test')).getStyleId('test')).length === 1, 'Test to make sure the style tag wasn’t inserted twice.');
@@ -181,9 +181,10 @@
   test('testMaxFontSize', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>1</div></div>');
-    $('#test').bigtext();
+    var $test = $('#test');
+    bigText($test);
 
-    equal(BigText.DEFAULT_MAX_FONT_SIZE_PX + 'px',
+    equal(bigText(test).DEFAULT_MAX_FONT_SIZE_PX + 'px',
       $('#test > div').css('font-size'),
       'Font size should equal the maximum.');
   });
@@ -192,7 +193,7 @@
   {
     $('#qunit-fixture').html('<div id="test" style="width:300px"><div>This</div></div>');
     var startingFontSize = parseInt($('#test > div').css('font-size'), 10);
-    $('#test').bigtext();
+    bigText($('#test'));
 
     ok(parseInt($('#test > div').css('font-size'), 10) > startingFontSize, 'Font size must be larger than the starting pixel size.');
   });
@@ -208,17 +209,16 @@
   {
     var defaultExemptLineFontSize,
       childFontSize,
-      $test = $('#test'),
       $exempt;
 
     $('#qunit-fixture').html('<div id="test" style="width:400px"><div>This is</div><div class="bigtext-exempt">a longer <span>second</span> line</div></div>');
-    $exempt = $test.find('.bigtext-exempt');
+    $exempt = $('.bigtext-exempt');
 
     defaultExemptLineFontSize = $exempt.css('font-size');
-    $test.bigtext();
+    bigText(document.getElementById('test'));
     childFontSize = $exempt.css('font-size');
 
-    equal(defaultExemptLineFontSize, childFontSize, 'Exempt line\'s child font size must be unchanged');
+    equal(defaultExemptLineFontSize, childFontSize, 'Exempt line’s child font size must be unchanged');
   });
 
   test('testIdCssSelectorStyle', function()
@@ -242,7 +242,7 @@
   test('testMinFontSize', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a super long line that will probably be too long for this single line. This is a super long line that will probably be too long for this single line.</div></div>');
-    $('#test').bigtext({
+    bigText($('#test'), {
       minfontsize: 16
     });
 
