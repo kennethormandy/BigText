@@ -103,10 +103,12 @@
   test('testDoubleStyleInjection', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
-    $('#test').bigtext().bigtext();
+    var test = $('#test');
+    bigText(test);
+    bigText(test);
 
     // FIXME this jQuery result won't return more than one element.
-    ok($('#' + BigText.getStyleId('test')).length === 1, 'Test to make sure the style tag wasn’t inserted twice.');
+    ok($('#' + bigText(document.getElementById('test')).getStyleId('test')).length === 1, 'Test to make sure the style tag wasn’t inserted twice.');
   });
 
 
