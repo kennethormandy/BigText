@@ -239,21 +239,6 @@
     BigTextTest.linesTest('#test', 600);
   });
 
-  test('testNoConflict', function()
-  {
-    $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a single line.</div></div>');
-
-    var BT = BigText.noConflict();
-    $.fn.bt = BT.mainMethod;
-
-    $('#test').bt();
-
-    var defaultDocumentFontSize = $('<div/>').appendTo(document.body).css('font-size'),
-      childFontSize = $('#test > div').css('font-size');
-
-    notEqual(defaultDocumentFontSize, childFontSize, 'Font size must not equal the default.');
-  });
-
   test('testMinFontSize', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a super long line that will probably be too long for this single line. This is a super long line that will probably be too long for this single line.</div></div>');
