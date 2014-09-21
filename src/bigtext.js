@@ -377,10 +377,9 @@
     };
   }
 
-
   window.bigText = function(selector, options) {
-    return BigText.mainMethod.call(selector, options);
+    BigText.mainMethod.call(selector, options);
+    return BigText;
   };
-
 
 }(window, document));

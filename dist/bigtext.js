@@ -1,5 +1,5 @@
 /*!
- * BigText v0.1.7a, 2014-08-18
+ * BigText v0.1.7a, 2014-09-20
  * https://github.com/kennethormandy/bigtext
  * Copyright © 2011–2014 Zach Leatherman (@zachleat)
  * Copyright © 2014 Kenneth Ormandy (@kennethormandy)
@@ -385,10 +385,9 @@
     };
   }
 
-
   window.bigText = function(selector, options) {
-    return BigText.mainMethod.call(selector, options);
+    BigText.mainMethod.call(selector, options);
+    return BigText;
   };
-
 
 }(window, document));

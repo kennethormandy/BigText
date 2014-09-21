@@ -1,4 +1,4 @@
-/* global BigText:true */
+/* global BigText:true, bigText:true */
 (function( w, $ ) {
   "use strict";
 
@@ -90,16 +90,16 @@
 
   test('testExists', function()
   {
-    ok(!!BigText);
-    ok(!!$.fn.bigtext);
+    ok(!!bigText);
+    ok(!!window.bigText);
   });
 
   test('testStyleInjection', function()
   {
     $('#qunit-fixture').html('<div id="test" style="width:600px"><div>This is a simple test.</div></div>');
-    $('#test').bigtext();
+    bigText(document.getElementById('test'));
 
-    equal($('#' + BigText.getStyleId('test')).length, 1, 'Test to make sure the style tag was inserted.');
+    equal($('#' + bigText(document.getElementById('test')).getStyleId()).length, 1, 'Test to make sure the style tag was inserted.');
   });
 
   test('testDoubleStyleInjection', function()
@@ -108,7 +108,7 @@
     $('#test').bigtext().bigtext();
 
     // FIXME this jQuery result won't return more than one element.
-    ok($('#' + BigText.getStyleId('test')).length === 1, 'Test to make sure the style tag wasn\'t inserted twice.');
+    ok($('#' + BigText.getStyleId('test')).length === 1, 'Test to make sure the style tag wasn’t inserted twice.');
   });
 
 
