@@ -129,10 +129,12 @@
 
           BigText.clearCss(id);
 
-          forEach(children, function(child, lineNumber){
-            child.className = child.className.replace(new RegExp('\\b' + BigText.LINE_CLASS_PREFIX + '\\d+\\b'), '');
-            addClass(child, BigText.LINE_CLASS_PREFIX + lineNumber);
-          });
+          if(children.length >= 1) {
+            forEach(children, function(child, lineNumber){
+              child.className = child.className.replace(new RegExp('\\b' + BigText.LINE_CLASS_PREFIX + '\\d+\\b'), '');
+              addClass(child, BigText.LINE_CLASS_PREFIX + lineNumber);
+            });
+          }
 
           var sizes = calculateSizes(self, children, maxWidth, options.maxfontsize, options.minfontsize);
           headCache.appendChild(BigText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
@@ -275,93 +277,95 @@
       minFontSizes = [],
       ratios = [];
 
-    forEach(children, function(line) {
-      // TODO replace 8, 4 with a proportional size to the calculated font-size.
-      var intervals = BigText.supports.wholeNumberFontSizeOnly ? [8, 4, 1] : [8, 4, 1, 0.1];
-      var lineMax;
-      var newFontSize;
+    if(children.length >= 1) {
+      forEach(children, function(line) {
+        // TODO replace 8, 4 with a proportional size to the calculated font-size.
+        var intervals = BigText.supports.wholeNumberFontSizeOnly ? [8, 4, 1] : [8, 4, 1, 0.1];
+        var lineMax;
+        var newFontSize;
 
-      line.style.float = 'left';
+        line.style.float = 'left';
 
-      if(hasClass(line, BigText.EXEMPT_CLASS)) {
-        fontSizes.push(null);
-        ratios.push(null);
-        minFontSizes.push(false);
-        return;
-      }
+        if(hasClass(line, BigText.EXEMPT_CLASS)) {
+          fontSizes.push(null);
+          ratios.push(null);
+          minFontSizes.push(false);
+          return;
+        }
 
-      // TODO we can cache this ratio?
-      var autoGuessSubtraction = 32; // font size in px
-      var currentStyle = getComputedStyle(line);
-      var currentFontSize = parseFloat(currentStyle.getPropertyValue('font-size'));
-      var ratio = ( parseInt(currentStyle.getPropertyValue('width'), 10) / currentFontSize ).toFixed(6);
+        // TODO we can cache this ratio?
+        var autoGuessSubtraction = 32; // font size in px
+        var currentStyle = getComputedStyle(line);
+        var currentFontSize = parseFloat(currentStyle.getPropertyValue('font-size'));
+        var ratio = ( parseInt(currentStyle.getPropertyValue('width'), 10) / currentFontSize ).toFixed(6);
 
-      newFontSize = parseInt( maxWidth / ratio, 10 ) - autoGuessSubtraction;
+        newFontSize = parseInt( maxWidth / ratio, 10 ) - autoGuessSubtraction;
 
-      outer: for(var m=0, n=intervals.length; m<n; m++) {
-        inner: for(var j=1, k=10; j<=k; j++) {
-          if(newFontSize + j*intervals[m] > maxFontSize) {
-            newFontSize = maxFontSize;
-            break outer;
-          }
-
-          lineMax = testLineDimensions(line, maxWidth, 'fontSize', newFontSize + j*intervals[m], intervals[m], 'px', lineMax);
-          if(typeof lineMax !== 'number') {
-            newFontSize = lineMax.size;
-
-            if(lineMax.match === 'exact') {
+        outer: for(var m=0, n=intervals.length; m<n; m++) {
+          inner: for(var j=1, k=10; j<=k; j++) {
+            if(newFontSize + j*intervals[m] > maxFontSize) {
+              newFontSize = maxFontSize;
               break outer;
             }
-            break inner;
+
+            lineMax = testLineDimensions(line, maxWidth, 'fontSize', newFontSize + j*intervals[m], intervals[m], 'px', lineMax);
+            if(typeof lineMax !== 'number') {
+              newFontSize = lineMax.size;
+
+              if(lineMax.match === 'exact') {
+                break outer;
+              }
+              break inner;
+            }
           }
         }
-      }
 
-      ratios.push(maxWidth / newFontSize);
+        ratios.push(maxWidth / newFontSize);
 
-      if(newFontSize > maxFontSize) {
-        fontSizes.push(maxFontSize);
-        minFontSizes.push(false);
-      } else if(!!minFontSize && newFontSize < minFontSize) {
-        fontSizes.push(minFontSize);
-        minFontSizes.push(true);
-      } else {
-        fontSizes.push(newFontSize);
-        minFontSizes.push(false);
-      }
-    });
-
-    forEach(children, function(line, lineNumber) {
-      var wordSpacing = 0;
-      var interval = 1;
-      var maxWordSpacing;
-
-      if(hasClass(line, BigText.EXEMPT_CLASS)) {
-        wordSpacings.push(null);
-        return;
-      }
-
-      // must re-use font-size, even though it was removed above.
-      line.style.fontSize = fontSizes[lineNumber] + 'px';
-
-      for(var m=1, n=3; m<n; m+=interval) {
-        maxWordSpacing = testLineDimensions(line, maxWidth, 'wordSpacing', m, interval, 'px', maxWordSpacing);
-        if(typeof maxWordSpacing !== 'number') {
-          wordSpacing = maxWordSpacing.size;
-          break;
+        if(newFontSize > maxFontSize) {
+          fontSizes.push(maxFontSize);
+          minFontSizes.push(false);
+        } else if(!!minFontSize && newFontSize < minFontSize) {
+          fontSizes.push(minFontSize);
+          minFontSizes.push(true);
+        } else {
+          fontSizes.push(newFontSize);
+          minFontSizes.push(false);
         }
-      }
+      });
 
-      line.style.fontSize = '';
-      wordSpacings.push(wordSpacing);
+      forEach(children, function(line, lineNumber) {
+        var wordSpacing = 0;
+        var interval = 1;
+        var maxWordSpacing;
 
-    });
+        if(hasClass(line, BigText.EXEMPT_CLASS)) {
+          wordSpacings.push(null);
+          return;
+        }
 
-    // No sure if this needs to be its own
-    // forEach or can exist in one previous
-    forEach(children, function(child) {
-      child.removeAttribute('style');
-    });
+        // must re-use font-size, even though it was removed above.
+        line.style.fontSize = fontSizes[lineNumber] + 'px';
+
+        for(var m=1, n=3; m<n; m+=interval) {
+          maxWordSpacing = testLineDimensions(line, maxWidth, 'wordSpacing', m, interval, 'px', maxWordSpacing);
+          if(typeof maxWordSpacing !== 'number') {
+            wordSpacing = maxWordSpacing.size;
+            break;
+          }
+        }
+
+        line.style.fontSize = '';
+        wordSpacings.push(wordSpacing);
+
+      });
+
+      // No sure if this needs to be its own
+      // forEach or can exist in one previous
+      forEach(children, function(child) {
+        child.removeAttribute('style');
+      });
+    }
 
     if( !BigText.DEBUG_MODE ) {
       c.parentNode.removeChild(c);
