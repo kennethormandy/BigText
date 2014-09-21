@@ -132,6 +132,7 @@ Use `display: inline` children (like a `span`) so the text will flow correctly i
   var ex = document.getElementById('example');
   bigText(ex);
 </script>
+```
 
 
 ### Mix and Match Typefaces
