@@ -12,6 +12,12 @@
     "typography",
     "type"
   ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "package.json"
+  ],
   "author": {
     "name": "Kenneth Ormandy",
     "email": "hello@kennethormandy.com",
