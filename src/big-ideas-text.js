@@ -165,7 +165,6 @@
 
   function getComputedStyle(el, pseudo) {
     pseudo = pseudo || null;
-    console.log(el);
     if (!BigIdeasText.supports.wholeNumberFontSizeOnly) {
       return window.getComputedStyle(el, pseudo);
     }
