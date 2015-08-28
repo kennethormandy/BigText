@@ -1,8 +1,8 @@
 /*!
- * Big Ideas Text v0.1.0, 2014-09-21
+ * Big Ideas Text v0.1.2, 2015-08-27
  * https://github.com/kennethormandy/big-ideas-text
  * Copyright © 2011–2014 Zach Leatherman 
- * Copyright © 2014 Kenneth Ormandy (@kennethormandy)
+ * Copyright © 2015 Kenneth Ormandy (@kennethormandy)
  * MIT License
  */
 
@@ -173,7 +173,6 @@
 
   function getComputedStyle(el, pseudo) {
     pseudo = pseudo || null;
-    console.log(el);
     if (!BigIdeasText.supports.wholeNumberFontSizeOnly) {
       return window.getComputedStyle(el, pseudo);
     }
