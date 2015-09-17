@@ -29,7 +29,7 @@ Alternatively, install it with npm and use the build tool of your choice:
 #### With npm
 
 ```
-npm install kennethormandy/big-ideas-text
+npm install big-ideas-text
 ```
 
 ## Requirements
