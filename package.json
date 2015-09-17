@@ -62,7 +62,7 @@
     "grunt-banner": "~0.2.2",
     "grunt-replace": "~0.7.6",
     "grunt-lintspaces": "~0.7.0",
-    "grunt-mkdir": "~0.1.1"
+    "grunt-mkdir": "~0.1.1",
     "jquery": "2.1.4",
     "qunitjs": "1.19.0"
   },
