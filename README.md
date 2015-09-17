@@ -24,24 +24,12 @@ Big Ideas Text aims to be as easy to use as the original [BigText](https://githu
 
 [<img alt="Get the latest version of Big Ideas Text" src="assets/download.png" width="150px" />](https://github.com/kennethormandy/big-ideas-text/blob/master/dist/big-ideas-text.js)
 
-Alternatively, install it with the package manager and build tool of your choice:
+Alternatively, install it with npm and use the build tool of your choice:
 
 #### With npm
 
 ```
 npm install kennethormandy/big-ideas-text
-```
-
-#### With Component
-
-```bash
-component install kennethormandy/big-ideas-text
-```
-
-#### With bower
-
-```bash
-bower install big-ideas-text
 ```
 
 ## Requirements
