@@ -18,6 +18,11 @@
     "LICENSE.md",
     "package.json"
   ],
+  "ignore": [
+    "test",
+    "demo",
+    "assets"
+  ],
   "author": {
     "name": "Kenneth Ormandy",
     "email": "hello@kennethormandy.com",
@@ -37,8 +42,7 @@
   ],
   "scripts": {
     "start": "grunt",
-    "test": "grunt test",
-    "postinstall": "bower install"
+    "test": "grunt test"
   },
   "dependencies": {},
   "devDependencies": {
@@ -59,6 +63,8 @@
     "grunt-replace": "~0.7.6",
     "grunt-lintspaces": "~0.7.0",
     "grunt-mkdir": "~0.1.1"
+    "jquery": "2.1.4",
+    "qunitjs": "1.19.0"
   },
   "engines": {
     "node": ">=0.10.0",
@@ -69,7 +75,6 @@
     "src": "src",
     "dist": "dist",
     "test": "test",
-    "demo": "demo",
-    "bower": "bower_components"
+    "demo": "demo"
   }
 }
