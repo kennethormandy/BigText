@@ -8,6 +8,8 @@ module.exports = function(grunt) {
 	grunt.registerTask( "lint", [ "csslint", "jshint", "lintspaces" ] );
 	grunt.registerTask( "src", [ "lint", "concat", "usebanner" ] );
 	grunt.registerTask( "test", [ "qunit" ] );
+	grunt.registerTask( "sauce", [ "connect", "saucelabs-qunit" ] );
+
 
 	grunt.registerTask( "deploy", [ "default", "gh-pages" ] );
 
