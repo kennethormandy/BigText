@@ -1,7 +1,6 @@
 var log = [];
-
-var log = [];
 QUnit.done(function( test_results ) {
+  "use strict";
   var tests = log.map(function(details){
     return {
       name: details.name,
@@ -9,7 +8,7 @@ QUnit.done(function( test_results ) {
       expected: details.expected,
       actual: details.actual,
       source: details.source
-    }
+    };
   });
   test_results.tests = tests;
 
@@ -18,12 +17,13 @@ QUnit.done(function( test_results ) {
   setTimeout(function () { window.global_test_results = test_results; }, 2000);
 });
 QUnit.testStart(function(testDetails){
+  "use strict";
   QUnit.log = function(details){
     if (!details.result) {
-     details.name = testDetails.name;
-     log.push(details);
+      details.name = testDetails.name;
+      log.push(details);
     }
- }
+  };
 });
 
 (function( w, $ ) {

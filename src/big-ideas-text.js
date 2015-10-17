@@ -112,11 +112,11 @@
           var maxFontSize = options.maxfontsize;
 
           if(maxFontSizeAttr !== false) {
-            maxFontSize = parseInt(maxFontSizeAttr, 10)
+            maxFontSize = parseInt(maxFontSizeAttr, 10);
           }
 
           if(minFontSizeAttr !== false) {
-            minFontSize = parseInt(minFontSizeAttr, 10)
+            minFontSize = parseInt(minFontSizeAttr, 10);
           }
 
           addClass(self, 'bigIdeasText');
@@ -131,7 +131,7 @@
             BigIdeasText.bindResize('resize.bigIdeasText-event-' + id, function()
             {
               if (selfWidthAttr !== self.offsetWidth) {
-                self.setAttribute('bigIdeasText-width', self.offsetWidth)
+                self.setAttribute('bigIdeasText-width', self.offsetWidth);
                 BigIdeasText.mainMethod.call(document.getElementById(id), options);
               }
             });

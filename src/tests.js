@@ -22,10 +22,10 @@ QUnit.testStart(function(testDetails){
   "use strict";
   QUnit.log = function(details){
     if (!details.result) {
-     details.name = testDetails.name;
-     log.push(details);
+      details.name = testDetails.name;
+      log.push(details);
     }
- };
+  };
 });
 
 (function( w, $ ) {
