@@ -1,5 +1,5 @@
 /*!
- * Big Ideas Text v0.2.0, 2015-09-17
+ * Big Ideas Text v0.3.0, 2015-10-17
  * https://github.com/kennethormandy/big-ideas-text
  * Copyright © 2011–2014 Zach Leatherman 
  * Copyright © 2015 Kenneth Ormandy (@kennethormandy)
@@ -54,12 +54,8 @@
         }
       },
       bindResize: function(eventName, resizeFunction) {
-        window.removeEventListener('rezie', resizeFunction);
-        // if(typeof window.Cowboy !== 'undefined' && typeof window.Cowboy.throttle !== 'undefined') {
-        //     window.addEventListener('resize', window.Cowboy.throttle(100, resizeFunction), false);
-        // } else {
-          window.addEventListener('resize', debounce(resizeFunction, 100), false);
-        // }
+        window.removeEventListener('resize', resizeFunction);
+        window.addEventListener('resize', debounce(resizeFunction, 500), false);
       },
       getStyleId: function(id)
       {
@@ -102,7 +98,6 @@
       mainMethod: function(options)
       {
         BigIdeasText.init();
-
         options = extend({
           minfontsize: BigIdeasText.DEFAULT_MIN_FONT_SIZE_PX,
           maxfontsize: BigIdeasText.DEFAULT_MAX_FONT_SIZE_PX,
@@ -118,6 +113,19 @@
           var maxWidth = parseInt(selfStyle.getPropertyValue('width'), 10);
           var id = self.getAttribute('id');
           var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
+          var minFontSizeAttr = self.getAttribute('bigIdeasText-minfontsize') || false;
+          var maxFontSizeAttr = self.getAttribute('bigIdeasText-maxfontsize') || false;
+          var selfWidthAttr = self.getAttribute('bigIdeasText-width') || self.offsetWidth;
+          var minFontSize = options.minfontsize;
+          var maxFontSize = options.maxfontsize;
+
+          if(maxFontSizeAttr !== false) {
+            maxFontSize = parseInt(maxFontSizeAttr, 10);
+          }
+
+          if(minFontSizeAttr !== false) {
+            minFontSize = parseInt(minFontSizeAttr, 10);
+          }
 
           addClass(self, 'bigIdeasText');
 
@@ -130,8 +138,10 @@
           if(options.resize) {
             BigIdeasText.bindResize('resize.bigIdeasText-event-' + id, function()
             {
-              // TODO only call this if the width has changed.
-              BigIdeasText.mainMethod.call(document.getElementById(id), options);
+              if (selfWidthAttr !== self.offsetWidth) {
+                self.setAttribute('bigIdeasText-width', self.offsetWidth);
+                BigIdeasText.mainMethod.call(document.getElementById(id), options);
+              }
             });
           }
 
@@ -142,7 +152,7 @@
             addClass(child, BigIdeasText.LINE_CLASS_PREFIX + lineNumber);
           });
 
-          var sizes = calculateSizes(self, children, maxWidth, options.maxfontsize, options.minfontsize);
+          var sizes = calculateSizes(self, children, maxWidth, maxFontSize, minFontSize);
           headCache.appendChild(BigIdeasText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
 
