@@ -46,12 +46,8 @@
         }
       },
       bindResize: function(eventName, resizeFunction) {
-        window.removeEventListener('rezie', resizeFunction);
-        // if(typeof window.Cowboy !== 'undefined' && typeof window.Cowboy.throttle !== 'undefined') {
-        //     window.addEventListener('resize', window.Cowboy.throttle(100, resizeFunction), false);
-        // } else {
-          window.addEventListener('resize', debounce(resizeFunction, 100), false);
-        // }
+        window.removeEventListener('resize', resizeFunction);
+        window.addEventListener('resize', debounce(resizeFunction, 500), false);
       },
       getStyleId: function(id)
       {
@@ -111,6 +107,7 @@
           var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
           var minFontSizeAttr = self.getAttribute('bigIdeasText-minfontsize') || false;
           var maxFontSizeAttr = self.getAttribute('bigIdeasText-maxfontsize') || false;
+          var selfWidthAttr = self.getAttribute('bigIdeasText-width') || self.offsetWidth;
           var minFontSize = options.minfontsize;
           var maxFontSize = options.maxfontsize;
 
@@ -133,8 +130,10 @@
           if(options.resize) {
             BigIdeasText.bindResize('resize.bigIdeasText-event-' + id, function()
             {
-              // TODO only call this if the width has changed.
-              BigIdeasText.mainMethod.call(document.getElementById(id), options);
+              if (selfWidthAttr !== self.offsetWidth) {
+                self.setAttribute('bigIdeasText-width', self.offsetWidth)
+                BigIdeasText.mainMethod.call(document.getElementById(id), options);
+              }
             });
           }
 
