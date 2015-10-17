@@ -94,7 +94,6 @@
       mainMethod: function(options)
       {
         BigIdeasText.init();
-
         options = extend({
           minfontsize: BigIdeasText.DEFAULT_MIN_FONT_SIZE_PX,
           maxfontsize: BigIdeasText.DEFAULT_MAX_FONT_SIZE_PX,
@@ -110,6 +109,18 @@
           var maxWidth = parseInt(selfStyle.getPropertyValue('width'), 10);
           var id = self.getAttribute('id');
           var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
+          var minFontSizeAttr = self.getAttribute('bigIdeasText-minfontsize') || false;
+          var maxFontSizeAttr = self.getAttribute('bigIdeasText-maxfontsize') || false;
+          var minFontSize = options.minfontsize;
+          var maxFontSize = options.maxfontsize;
+
+          if(maxFontSizeAttr !== false) {
+            maxFontSize = parseInt(maxFontSizeAttr, 10)
+          }
+
+          if(minFontSizeAttr !== false) {
+            minFontSize = parseInt(minFontSizeAttr, 10)
+          }
 
           addClass(self, 'bigIdeasText');
 
@@ -134,7 +145,7 @@
             addClass(child, BigIdeasText.LINE_CLASS_PREFIX + lineNumber);
           });
 
-          var sizes = calculateSizes(self, children, maxWidth, options.maxfontsize, options.minfontsize);
+          var sizes = calculateSizes(self, children, maxWidth, maxFontSize, minFontSize);
           headCache.appendChild(BigIdeasText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
 
