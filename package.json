@@ -43,7 +43,8 @@
   "scripts": {
     "start": "grunt",
     "test": "grunt test",
-    "lint": "grunt lint"
+    "lint": "grunt lint",
+    "sauce": "grunt sauce"
   },
   "dependencies": {},
   "devDependencies": {

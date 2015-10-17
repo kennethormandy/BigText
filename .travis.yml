@@ -1,7 +1,9 @@
 language: node_js
+sudo: false
 node_js:
   - '4.0.0'
 before_script:
   - npm install -g grunt-cli
   - npm install
 script: npm test -- -v
+after_success: npm run sauce
