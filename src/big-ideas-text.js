@@ -389,17 +389,15 @@
     };
   }
 
-  var bigIdeasText = function(selector, options) {
+  var bigIdeasText = function (selector, options) {
     BigIdeasText.mainMethod.call(selector, options);
     return BigIdeasText;
-  }
+  };
 
-  if (typeof module !== 'undefined') {
-    module.exports = bigIdeasText
-  } else if (typeof $ !== 'undefined') {
-    $.bigIdeasText = bigIdeasText
+  if (typeof module === 'object' && typeof module.exports !== 'undefined') {
+    module.exports = bigIdeasText;
   } else {
-    window.bigIdeasText = bigIdeasText
+    window.bigIdeasText = bigIdeasText;
   }
 
 }(window, document));

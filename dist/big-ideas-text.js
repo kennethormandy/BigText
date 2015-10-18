@@ -397,9 +397,15 @@
     };
   }
 
-  window.bigIdeasText = function(selector, options) {
+  var bigIdeasText = function (selector, options) {
     BigIdeasText.mainMethod.call(selector, options);
     return BigIdeasText;
   };
+
+  if (typeof module === 'object' && typeof module.exports !== 'undefined') {
+    module.exports = bigIdeasText;
+  } else {
+    window.bigIdeasText = bigIdeasText;
+  }
 
 }(window, document));
