@@ -1,5 +1,5 @@
 /*!
- * Big Ideas Text v0.3.0, 2015-10-17
+ * Big Ideas Text v0.4.0, 2015-10-17
  * https://github.com/kennethormandy/big-ideas-text
  * Copyright © 2011–2014 Zach Leatherman 
  * Copyright © 2015 Kenneth Ormandy (@kennethormandy)

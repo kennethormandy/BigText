@@ -1,7 +1,7 @@
 {
   "name": "big-ideas-text",
   "title": "Big Ideas Text",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Dynamically scale lines of text within a container.",
   "homepage": "https://github.com/kennethormandy/big-ideas-text",
   "repository": "git://github.com/kennethormandy/big-ideas-text.git",
