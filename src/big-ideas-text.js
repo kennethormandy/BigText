@@ -53,6 +53,17 @@
       {
         return BigIdeasText.STYLE_ID + '-' + id;
       },
+      getViewportWidth: function()
+      {
+        // Via http://stackoverflow.com/a/11744120/864799
+        var w = window;
+        var d = document;
+        var e = d.documentElement;
+        var g = d.body;
+        var x = w.innerWidth || e.clientWidth || g.clientWidth;
+        console.log(x);
+        return x;
+      },
       generateStyleTag: function(id, css)
       {
         var styleEl = document.createElement('style');
@@ -110,6 +121,7 @@
           var selfWidthAttr = self.getAttribute('bigIdeasText-width') || self.offsetWidth;
           var minFontSize = options.minfontsize;
           var maxFontSize = options.maxfontsize;
+          var viewportCached = 0;
 
           if(maxFontSizeAttr !== false) {
             maxFontSize = parseInt(maxFontSizeAttr, 10);
@@ -128,11 +140,13 @@
           }
 
           if(options.resize) {
+            var viewportWidth = BigIdeasText.getViewportWidth();
             BigIdeasText.bindResize('resize.bigIdeasText-event-' + id, function()
             {
-              if (selfWidthAttr !== self.offsetWidth) {
+              if ((selfWidthAttr !== self.offsetWidth) && (viewportCached !== viewportWidth)) {
                 self.setAttribute('bigIdeasText-width', self.offsetWidth);
                 BigIdeasText.mainMethod.call(document.getElementById(id), options);
+                viewportCached = viewportWidth;
               }
             });
           }
