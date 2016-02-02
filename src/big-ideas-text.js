@@ -113,7 +113,6 @@
           var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
           var minFontSizeAttr = self.getAttribute('bigIdeasText-minfontsize') || false;
           var maxFontSizeAttr = self.getAttribute('bigIdeasText-maxfontsize') || false;
-          // var selfWidthAttr = self.getAttribute('bigIdeasText-width') || self.offsetWidth;
           var minFontSize = options.minfontsize;
           var maxFontSize = options.maxfontsize;
 
@@ -146,13 +145,9 @@
 
         if(options.resize) {
           var self = this;
-          console.log(self);
           BigIdeasText.bindResize(function()
           {
-            console.log('bound resize for all', BigIdeasText.VIEWPORT_WIDTH, BigIdeasText.getViewportWidth());
-            // if (selfWidthAttr !== self.offsetWidth) {
             if (BigIdeasText.VIEWPORT_WIDTH !== BigIdeasText.getViewportWidth()) {
-              // self.setAttribute('bigIdeasText-width', self.offsetWidth);
               BigIdeasText.mainMethod.call(self, options);
             }
             BigIdeasText.VIEWPORT_WIDTH = BigIdeasText.getViewportWidth();
