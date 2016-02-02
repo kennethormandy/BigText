@@ -1,8 +1,8 @@
 /*!
- * Big Ideas Text v0.4.0, 2015-10-17
+ * Big Ideas Text v0.4.1, 2016-02-02
  * https://github.com/kennethormandy/big-ideas-text
  * Copyright © 2011–2014 Zach Leatherman 
- * Copyright © 2015 Kenneth Ormandy (@kennethormandy)
+ * Copyright © 2016 Kenneth Ormandy (@kennethormandy)
  * MIT License
  */
 
@@ -19,6 +19,7 @@
       STYLE_ID: 'bigIdeasText-id',
       LINE_CLASS_PREFIX: 'bigIdeasText-line',
       EXEMPT_CLASS: 'bigIdeasText-exempt',
+      VIEWPORT_WIDTH: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
       test: {
         wholeNumberFontSizeOnly: function() {
           if( !( 'getComputedStyle' in window ) || document.body == null ) {
@@ -53,13 +54,18 @@
           ]));
         }
       },
-      bindResize: function(eventName, resizeFunction) {
+      bindResize: function(resizeFunction) {
         window.removeEventListener('resize', resizeFunction);
-        window.addEventListener('resize', debounce(resizeFunction, 500), false);
+        window.addEventListener('resize', debounce(resizeFunction, 500, true), false);
       },
       getStyleId: function(id)
       {
         return BigIdeasText.STYLE_ID + '-' + id;
+      },
+      getViewportWidth: function()
+      {
+        // Via http://stackoverflow.com/a/11744120/864799
+        return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       },
       generateStyleTag: function(id, css)
       {
@@ -115,7 +121,6 @@
           var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
           var minFontSizeAttr = self.getAttribute('bigIdeasText-minfontsize') || false;
           var maxFontSizeAttr = self.getAttribute('bigIdeasText-maxfontsize') || false;
-          var selfWidthAttr = self.getAttribute('bigIdeasText-width') || self.offsetWidth;
           var minFontSize = options.minfontsize;
           var maxFontSize = options.maxfontsize;
 
@@ -135,16 +140,6 @@
             self.setAttribute('id', id);
           }
 
-          if(options.resize) {
-            BigIdeasText.bindResize('resize.bigIdeasText-event-' + id, function()
-            {
-              if (selfWidthAttr !== self.offsetWidth) {
-                self.setAttribute('bigIdeasText-width', self.offsetWidth);
-                BigIdeasText.mainMethod.call(document.getElementById(id), options);
-              }
-            });
-          }
-
           BigIdeasText.clearCss(id);
 
           forEach(children, function(child, lineNumber){
@@ -155,6 +150,17 @@
           var sizes = calculateSizes(self, children, maxWidth, maxFontSize, minFontSize);
           headCache.appendChild(BigIdeasText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
+
+        if(options.resize) {
+          var self = this;
+          BigIdeasText.bindResize(function()
+          {
+            if (BigIdeasText.VIEWPORT_WIDTH !== BigIdeasText.getViewportWidth()) {
+              BigIdeasText.mainMethod.call(self, options);
+            }
+            BigIdeasText.VIEWPORT_WIDTH = BigIdeasText.getViewportWidth();
+          });
+        }
 
         // return trigger(this, 'bigIdeasText:complete');
         return this;
@@ -204,15 +210,24 @@
     }
   }
 
-  function debounce(fn, delay)
+  function debounce(func, wait, immediate)
   {
-    var timer = null;
-    return function () {
+    var timeout;
+    return function()
+    {
       var context = this, args = arguments;
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        fn.apply(context, args);
-      }, delay);
+      var later = function() {
+        timeout = null;
+        if(!immediate) {
+          func.apply(context, args);
+        }
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if(callNow) {
+        func.apply(context, args);
+      }
     };
   }
 
