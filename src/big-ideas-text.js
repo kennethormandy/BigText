@@ -11,6 +11,7 @@
       STYLE_ID: 'bigIdeasText-id',
       LINE_CLASS_PREFIX: 'bigIdeasText-line',
       EXEMPT_CLASS: 'bigIdeasText-exempt',
+      VIEWPORT_WIDTH: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
       test: {
         wholeNumberFontSizeOnly: function() {
           if( !( 'getComputedStyle' in window ) || document.body == null ) {
@@ -45,9 +46,9 @@
           ]));
         }
       },
-      bindResize: function(eventName, resizeFunction) {
+      bindResize: function(resizeFunction) {
         window.removeEventListener('resize', resizeFunction);
-        window.addEventListener('resize', debounce(resizeFunction, 500), false);
+        window.addEventListener('resize', debounce(resizeFunction, 500, true), false);
       },
       getStyleId: function(id)
       {
@@ -56,13 +57,7 @@
       getViewportWidth: function()
       {
         // Via http://stackoverflow.com/a/11744120/864799
-        var w = window;
-        var d = document;
-        var e = d.documentElement;
-        var g = d.body;
-        var x = w.innerWidth || e.clientWidth || g.clientWidth;
-        console.log(x);
-        return x;
+        return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       },
       generateStyleTag: function(id, css)
       {
@@ -118,10 +113,9 @@
           var children = options.childSelector ? self.querySelectorAll( options.childSelector ) : self.children;
           var minFontSizeAttr = self.getAttribute('bigIdeasText-minfontsize') || false;
           var maxFontSizeAttr = self.getAttribute('bigIdeasText-maxfontsize') || false;
-          var selfWidthAttr = self.getAttribute('bigIdeasText-width') || self.offsetWidth;
+          // var selfWidthAttr = self.getAttribute('bigIdeasText-width') || self.offsetWidth;
           var minFontSize = options.minfontsize;
           var maxFontSize = options.maxfontsize;
-          var viewportCached = 0;
 
           if(maxFontSizeAttr !== false) {
             maxFontSize = parseInt(maxFontSizeAttr, 10);
@@ -139,18 +133,6 @@
             self.setAttribute('id', id);
           }
 
-          if(options.resize) {
-            var viewportWidth = BigIdeasText.getViewportWidth();
-            BigIdeasText.bindResize('resize.bigIdeasText-event-' + id, function()
-            {
-              if ((selfWidthAttr !== self.offsetWidth) && (viewportCached !== viewportWidth)) {
-                self.setAttribute('bigIdeasText-width', self.offsetWidth);
-                BigIdeasText.mainMethod.call(document.getElementById(id), options);
-                viewportCached = viewportWidth;
-              }
-            });
-          }
-
           BigIdeasText.clearCss(id);
 
           forEach(children, function(child, lineNumber){
@@ -161,6 +143,21 @@
           var sizes = calculateSizes(self, children, maxWidth, maxFontSize, minFontSize);
           headCache.appendChild(BigIdeasText.generateCss(id, sizes.fontSizes, sizes.wordSpacings, sizes.minFontSizes));
         });
+
+        if(options.resize) {
+          var self = this;
+          console.log(self);
+          BigIdeasText.bindResize(function()
+          {
+            console.log('bound resize for all', BigIdeasText.VIEWPORT_WIDTH, BigIdeasText.getViewportWidth());
+            // if (selfWidthAttr !== self.offsetWidth) {
+            if (BigIdeasText.VIEWPORT_WIDTH !== BigIdeasText.getViewportWidth()) {
+              // self.setAttribute('bigIdeasText-width', self.offsetWidth);
+              BigIdeasText.mainMethod.call(self, options);
+            }
+            BigIdeasText.VIEWPORT_WIDTH = BigIdeasText.getViewportWidth();
+          });
+        }
 
         // return trigger(this, 'bigIdeasText:complete');
         return this;
@@ -210,15 +207,24 @@
     }
   }
 
-  function debounce(fn, delay)
+  function debounce(func, wait, immediate)
   {
-    var timer = null;
-    return function () {
+    var timeout;
+    return function()
+    {
       var context = this, args = arguments;
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        fn.apply(context, args);
-      }, delay);
+      var later = function() {
+        timeout = null;
+        if(!immediate) {
+          func.apply(context, args);
+        }
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if(callNow) {
+        func.apply(context, args);
+      }
     };
   }
 
