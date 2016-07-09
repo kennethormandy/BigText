@@ -386,9 +386,10 @@
 
     // No sure if this needs to be its own
     // forEach or can exist in one previous
-    forEach(children, function(child) {
-      child.removeAttribute('style');
-    });
+    // Removed for #4
+    // forEach(children, function(child) {
+    //   child.removeAttribute('style');
+    // });
 
     if( !BigIdeasText.DEBUG_MODE ) {
       c.parentNode.removeChild(c);
