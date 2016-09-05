@@ -332,4 +332,13 @@ QUnit.testStart(function(testDetails){
 
     BigIdeasTextTest.linesTest('#test', 600);
   });
+
+  test('testVerticalSpanChildren', function()
+  {
+    $('#qunit-fixture').html('<div style="-ms-writing-mode: tb-rl; -webkit-writing-mode: vertical-rl; -moz-writing-mode: vertical-rl; -ms-writing-mode: vertical-rl; writing-mode: vertical-rl;"><div id="test" style="width:600px;"><span>国立公</span><span>園八幡</span><span>平</span><span>地域は40,489haの広さがあり、</span></div></div>');
+
+    BigIdeasTextTest.linesTest('#test', 600, {
+      vertical: true
+    });
+  });
 }( this, jQuery ));
